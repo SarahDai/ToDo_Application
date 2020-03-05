@@ -1,4 +1,4 @@
-package middlelayerpackage;
+package middlelayersystem;
 
 /**
  * The validator for the Check box .
@@ -14,5 +14,11 @@ public class CheckBoxValidator implements Validator<Boolean> {
     @Override
     public boolean isValid(Boolean input) {
         return true;
+    }
+
+
+    @Override
+    public String toString() {
+        return "CheckBoxValidator{}";
     }
 }
