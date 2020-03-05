@@ -1,21 +1,16 @@
-package middlelayerpackage;
+package middlelayersystem;
+
+import java.util.Objects;
 
 /**
  * The validator for the Password.
  */
 public class PasswordValidator implements Validator<String> {
-    private static final int UPPERCASE_LOW_BOUND = 65;
-    private static final int UPPERCASE_HIGH_BOUND = 90;
-    private static final int LOWERCASE_LOW_BOUND = 97;
-    private static final int LOWERCASE_HIGH_BOUND = 122;
-    private static final int DIGIT_LOW_BOUND = 48;
-    private static final int DIGIT_HIGH_BOUND = 57;
-    private static final int SPACE_VAL = 32;
     private int minLen;
     private int maxLen;
     private int minLowerCase;
     private int minUpperCase;
-    private int digits;
+    private int minDigits;
 
     /**
      * Instantiates a new Password validator.
@@ -28,7 +23,7 @@ public class PasswordValidator implements Validator<String> {
         this.maxLen = maxLen;
         this.minLowerCase = 0;
         this.minUpperCase = 0;
-        this.digits = 0;
+        this.minDigits = 0;
     }
 
     /**
@@ -73,7 +68,7 @@ public class PasswordValidator implements Validator<String> {
      * @return the minimum number of digits
      */
     public int getDigits() {
-        return this.digits;
+        return this.minDigits;
     }
 
     /**
@@ -100,7 +95,7 @@ public class PasswordValidator implements Validator<String> {
      * @param digits the minimum number of digits
      */
     public void setDigits(int digits) {
-        this.digits = digits;
+        this.minDigits = digits;
     }
 
     /**
@@ -111,30 +106,70 @@ public class PasswordValidator implements Validator<String> {
      */
     @Override
     public boolean isValid(String input) {
-        if ((input.length() < minLen || input.length() > maxLen) ||
-            checkNum(input, UPPERCASE_LOW_BOUND, UPPERCASE_HIGH_BOUND, this.minUpperCase) ||
-            checkNum(input, LOWERCASE_LOW_BOUND, LOWERCASE_HIGH_BOUND, this.minLowerCase) ||
-            checkNum(input, DIGIT_LOW_BOUND, DIGIT_HIGH_BOUND, this.digits) ||
-            !checkNum(input, SPACE_VAL, SPACE_VAL, 1)
-        ) return false;
+        if (!checkLength(input) || !checkLetterNum(input)) return false;
         return true;
     }
 
     /**
-     * Check if the number of characters is in the bounds.
-     *
-     * @param str the string
-     * @param lowBound the low bound of the char in this type
-     * @param highBound the high bound of the char in this type
-     * @param min the minimum number that the password must contain
-     * @return true if the number of characters is in the bounds.
+     * Check if the input has valid length
+     * @param input the string to be checked
+     * @return true if the input has valid length
      */
-    private boolean checkNum(String str, int lowBound, int highBound, int min) {
-        int num = 0;
-        for (char x : str.toCharArray()) {
-            if (x >= lowBound && x <= highBound) num++;
-        }
-        return num < min;
+    private boolean checkLength(String input) {
+        if (input.length() < this.minLen || input.length() > this.maxLen) return false;
+        return true;
     }
 
+    /**
+     * Check if the input meets the required length to different types of letters
+     * @param input the string to be checked
+     * @return true if the input meets the requirement
+     */
+    private boolean checkLetterNum(String input) {
+        int lowerCase = 0;
+        int upperCase = 0;
+        int digitsNum = 0;
+        for (char x : input.toCharArray()) {
+            if (Character.isLowerCase(x)) lowerCase++;
+            if (Character.isUpperCase(x)) upperCase++;
+            if (Character.isDigit(x)) digitsNum++;
+            if (Character.isSpaceChar(x)) return false;
+        }
+        return lowerCase >= this.minLowerCase && upperCase >= this.minUpperCase
+            && digitsNum >= this.minDigits;
+    }
+
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+        if (!super.equals(object)) {
+            return false;
+        }
+        PasswordValidator that = (PasswordValidator) object;
+        return minLen == that.minLen &&
+            maxLen == that.maxLen &&
+            minLowerCase == that.minLowerCase &&
+            minUpperCase == that.minUpperCase &&
+            minDigits == that.minDigits;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(minLen, maxLen, minLowerCase, minUpperCase, minDigits);
+    }
+
+    @Override
+    public String toString() {
+        return "PasswordValidator{" +
+            "minLen=" + minLen +
+            ", maxLen=" + maxLen +
+            ", minLowerCase=" + minLowerCase +
+            ", minUpperCase=" + minUpperCase +
+            ", minDigits=" + minDigits +
+            '}';
+    }
 }
