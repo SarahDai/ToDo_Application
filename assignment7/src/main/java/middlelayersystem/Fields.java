@@ -1,5 +1,7 @@
+package middlelayersystem;
+
 import java.util.Objects;
-import javax.xml.validation.Validator;
+import middlelayersystem.InvalidInputException;
 
 /**
  * A generic Fields class accepting different fields from users
@@ -69,7 +71,7 @@ public class Fields<T>{
    * @param input input value
    * @throws InvalidInputException if the input is not valid
    */
-  public void updateValue(T input)throws InvalidInputException{
+  public void updateValue(T input)throws InvalidInputException {
     if(this.validator.isValid(input)){
       this.value = input;
     }

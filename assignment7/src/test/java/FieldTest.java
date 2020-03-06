@@ -6,21 +6,21 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class FieldTest {
-  private Field<String> password;
-  private Field<Boolean> checkbox;
+  private Fields<String> password;
+  private Fields<Boolean> checkbox;
   private PasswordValidator pwdValidator;
   private CheckBoxValidator checkBoxValidator;
 
   @Before
   public void setUp() throws Exception {
     pwdValidator = new PasswordValidator(6,10);
-    pwdValidator.setMinUppercase(1);
-    pwdValidator.setMinLowercase(1);
-    pwdValidator.setMinDigits(1);
-    password = new Field<>("password", true, pwdValidator);
+    pwdValidator.setMinUpperCase(1);
+    pwdValidator.setMinLowerCase(1);
+    pwdValidator.setDigits(1);
+    password = new Fields<>("password", true, pwdValidator);
 
     checkBoxValidator = new CheckBoxValidator();
-    checkbox = new Field<>("female",false, checkBoxValidator);
+    checkbox = new Fields<>("female",false, checkBoxValidator);
   }
 
   @Test

@@ -1,9 +1,12 @@
+package middlelayersystem;
+
 import java.util.HashMap;
+import middlelayersystem.Validator;
 
 /**
  * Class Radio Button Validator indicating whether or not the button is selected
  */
-public class RadioButtonValidator implements IValidator<Boolean>{
+public class RadioButtonValidator implements Validator<Boolean> {
 
   /**
    * Helper method that check whether or not the input is valid.
