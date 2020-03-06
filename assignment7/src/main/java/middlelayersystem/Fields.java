@@ -84,10 +84,7 @@ public class Fields<T>{
    * @return true if it's filled and valid, false otherwise
    */
   public boolean isFilled(){
-    if(this.required && this.validator.isValid(this.value)){
-      return true;
-    }
-    return false;
+    return (this.required && this.validator.isValid(this.value)) || !this.required;
   }
 
   @Override
