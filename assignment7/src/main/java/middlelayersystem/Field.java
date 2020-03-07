@@ -1,13 +1,12 @@
 package middlelayersystem;
 
 import java.util.Objects;
-import middlelayersystem.InvalidInputException;
 
 /**
  * A generic Fields class accepting different fields from users
  * @param <T> a generic type
  */
-public class Fields<T>{
+public class Field<T>{
   private String label;
   private T value;
   private boolean required;
@@ -22,7 +21,7 @@ public class Fields<T>{
    * the form can be submitted
    * @param validator a​ Validator​ type that will perform input validation
    */
-  public Fields(String label, String value, boolean required, Validator validator) {
+  public Field(String label, String value, boolean required, Validator validator) {
     this.label = label;
     this.value = null;
     this.required = required;
@@ -92,14 +91,14 @@ public class Fields<T>{
     if (this == o) {
       return true;
     }
-    if (!(o instanceof Fields)) {
+    if (!(o instanceof Field)) {
       return false;
     }
-    Fields<?> fields = (Fields<?>) o;
-    return required == fields.required &&
-        Objects.equals(label, fields.label) &&
-        Objects.equals(value, fields.value) &&
-        Objects.equals(validator, fields.validator);
+    Field<?> field = (Field<?>) o;
+    return required == field.required &&
+        Objects.equals(label, field.label) &&
+        Objects.equals(value, field.value) &&
+        Objects.equals(validator, field.validator);
   }
 
   @Override
