@@ -6,8 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class FieldTest {
-  private Fields<String> password;
-  private Fields<Boolean> checkbox;
+  private Field<String> password;
+  private Field<Boolean> checkbox;
   private PasswordValidator pwdValidator;
   private CheckBoxValidator checkBoxValidator;
 
@@ -17,10 +17,10 @@ public class FieldTest {
     pwdValidator.setMinUpperCase(1);
     pwdValidator.setMinLowerCase(1);
     pwdValidator.setDigits(1);
-    password = new Fields<>("password", true, pwdValidator);
+    password = new Field<>("password", true, pwdValidator);
 
     checkBoxValidator = new CheckBoxValidator();
-    checkbox = new Fields<>("female",false, checkBoxValidator);
+    checkbox = new Field<>("female",false, checkBoxValidator);
   }
 
   @Test
@@ -30,7 +30,7 @@ public class FieldTest {
 
   @Test
   public void getRequired() {
-    assertEquals(true, password.getRequired());
+    assertEquals(true, password.isRequired());
   }
 
   @Test

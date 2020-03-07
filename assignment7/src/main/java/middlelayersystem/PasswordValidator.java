@@ -106,7 +106,7 @@ public class PasswordValidator implements Validator<String> {
      */
     @Override
     public boolean isValid(String input) {
-        if (!checkLength(input) || !checkLetterNum(input)) return false;
+        if (input == null || !checkLength(input) || !checkLetterNum(input)) return false;
         return true;
     }
 
