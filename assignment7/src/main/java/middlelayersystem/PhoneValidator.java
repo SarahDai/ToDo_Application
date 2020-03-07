@@ -34,6 +34,8 @@ public class PhoneValidator implements Validator<String> {
    */
   @Override
   public boolean isValid(String input) {
+    if (input == null) return false;
+
     return this.lengthRequirement(input) && this.typeRequirement(input);
   }
 

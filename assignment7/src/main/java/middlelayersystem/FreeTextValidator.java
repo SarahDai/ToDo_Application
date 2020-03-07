@@ -46,6 +46,8 @@ public class FreeTextValidator implements Validator<String> {
    */
   @Override
   public boolean isValid(String input) {
+    if (input == null) return false;
+
     return input.length() <= this.numCharPerLine * this.numLines;
   }
 

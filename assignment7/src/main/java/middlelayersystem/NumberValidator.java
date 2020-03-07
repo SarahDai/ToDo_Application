@@ -72,6 +72,8 @@ public class NumberValidator implements Validator<String> {
    */
   @Override
   public boolean isValid(String input) {
+    if (input == null) return false;
+
     if (this.getDecimalPlace(input) == MIN_DECIMAL_PLACE) {
       return this.isInteger(input);
     } else if (this.getDecimalPlace(input) <= this.numDecimalPlace) {
