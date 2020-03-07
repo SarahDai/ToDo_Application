@@ -1,13 +1,12 @@
 package middlelayersystem;
 
 import java.util.Objects;
-import middlelayersystem.InvalidInputException;
 
 /**
  * A generic Fields class accepting different fields from users
  * @param <T> a generic type
  */
-public class Fields<T>{
+public class Field<T>{
   private String label;
   private T value;
   private boolean required;
@@ -16,13 +15,11 @@ public class Fields<T>{
   /**
    * Constructor of the class
    * @param label The String label associated with the form fields
-   * @param value The input captured by the GUI.It’s data type will be either String for text fields
-   * or Boolean for fields
    * @param required A boolean indicating whether a particular field must be completed before
    * the form can be submitted
    * @param validator a​ Validator​ type that will perform input validation
    */
-  public Fields(String label, String value, boolean required, Validator validator) {
+  public Field(String label, boolean required, Validator validator) {
     this.label = label;
     this.value = null;
     this.required = required;
@@ -71,11 +68,11 @@ public class Fields<T>{
    * @param input input value
    * @throws InvalidInputException if the input is not valid
    */
-  public void updateValue(T input)throws InvalidInputException {
-    if(this.validator.isValid(input)){
-      this.value = input;
+  public void updateValue(T input) throws InvalidInputException {
+    if (!this.validator.isValid(input)) {
+      throw new InvalidInputException("Input is invalid!");
     }
-    throw new InvalidInputException("Input is invalid!");
+    this.value = input;
   }
 
   /**
@@ -84,7 +81,7 @@ public class Fields<T>{
    * @return true if it's filled and valid, false otherwise
    */
   public boolean isFilled(){
-    return (this.required && this.validator.isValid(this.value)) || !this.required;
+    return (this.required && this.value != null) || !this.required;
   }
 
   @Override
@@ -92,14 +89,14 @@ public class Fields<T>{
     if (this == o) {
       return true;
     }
-    if (!(o instanceof Fields)) {
+    if (!(o instanceof Field)) {
       return false;
     }
-    Fields<?> fields = (Fields<?>) o;
-    return required == fields.required &&
-        Objects.equals(label, fields.label) &&
-        Objects.equals(value, fields.value) &&
-        Objects.equals(validator, fields.validator);
+    Field<?> field = (Field<?>) o;
+    return required == field.required &&
+        Objects.equals(label, field.label) &&
+        Objects.equals(value, field.value) &&
+        Objects.equals(validator, field.validator);
   }
 
   @Override
@@ -109,7 +106,7 @@ public class Fields<T>{
 
   @Override
   public String toString() {
-    return "Fields{" +
+    return "Field{" +
         "label='" + label + '\'' +
         ", value=" + value +
         ", required=" + required +
