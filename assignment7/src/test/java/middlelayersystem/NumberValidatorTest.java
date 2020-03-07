@@ -35,6 +35,7 @@ public class NumberValidatorTest {
     public void isValid() {
         assertTrue(validator.isValid("3.4"));
         assertTrue(validator.isValid("3"));
+        assertFalse(validator.isValid(null));
         assertFalse(validator.isValid("0"));
         assertFalse(validator.isValid("6"));
         assertFalse(validator.isValid("3.1234"));
