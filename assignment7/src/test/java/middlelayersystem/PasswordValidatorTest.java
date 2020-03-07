@@ -10,7 +10,7 @@ public class PasswordValidatorTest {
 
   @Before
   public void setUp() throws Exception {
-    passwordValidator = new PasswordValidator(3, 3);
+    passwordValidator = new PasswordValidator(3,3);
   }
 
   @Test
@@ -40,7 +40,13 @@ public class PasswordValidatorTest {
 
   @Test
   public void isValid() {
+    String input = "233";
     assertFalse(passwordValidator.isValid(null));
+
+    PasswordValidator passwordValidator1 = new PasswordValidator(3,5);
+    assertFalse(passwordValidator1.isValid("22222222"));
+
+    assertFalse(passwordValidator1.isValid(""));
   }
 
   @Test
@@ -48,9 +54,11 @@ public class PasswordValidatorTest {
     assertTrue(passwordValidator.equals(passwordValidator));
     assertFalse(passwordValidator.equals(null));
     assertFalse(passwordValidator.equals(888));
+
     assertFalse(super.equals(passwordValidator));
 
-    assertEquals(passwordValidator.getMinLen(), new PasswordValidator(3, 3).getMinLen());
+    assertFalse(passwordValidator.equals(new PasswordValidator(3, 3)));
+
 
   }
 
