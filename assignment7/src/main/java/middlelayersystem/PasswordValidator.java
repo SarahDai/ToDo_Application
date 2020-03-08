@@ -146,9 +146,6 @@ public class PasswordValidator implements Validator<String> {
         if (object == null || getClass() != object.getClass()) {
             return false;
         }
-        if (!super.equals(object)) {
-            return false;
-        }
         PasswordValidator that = (PasswordValidator) object;
         return minLen == that.minLen &&
             maxLen == that.maxLen &&
