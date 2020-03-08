@@ -71,20 +71,22 @@ public class PasswordValidatorTest {
     assertFalse(passwordValidator.equals(null));
     assertFalse(passwordValidator.equals(8880));
     assertFalse(passwordValidator.equals(another));
+    assertFalse(passwordValidator.equals(new PasswordValidator(3,6)));
 
     PasswordValidator copy = new PasswordValidator(8, 12);
-
+    //Different minLowerCase
     copy.setMinLowerCase(2);
     assertFalse(another.equals(copy));
-
+    //Different minUpperCase
     copy.setMinLowerCase(4);
     copy.setMinUpperCase(2);
     assertFalse(another.equals(copy));
-
+    //Different minDigit
     copy.setMinUpperCase(1);
     copy.setDigits(2);
     assertFalse(another.equals(copy));
 
+    //all same properties
     copy.setDigits(1);
     assertTrue(another.equals(copy));
   }
