@@ -7,10 +7,15 @@ import org.junit.Test;
 
 public class PasswordValidatorTest {
   PasswordValidator passwordValidator;
+  PasswordValidator another;
 
   @Before
   public void setUp() throws Exception {
     passwordValidator = new PasswordValidator(3,3);
+    another = new PasswordValidator(8,12);
+    another.setDigits(1);
+    another.setMinUpperCase(1);
+    another.setMinLowerCase(4);
   }
 
   @Test
@@ -40,31 +45,53 @@ public class PasswordValidatorTest {
 
   @Test
   public void isValid() {
-    String input = "233";
+    // check white space
+    assertEquals(false, passwordValidator.isValid("Ab "));
+
+    // check input is null
     assertFalse(passwordValidator.isValid(null));
 
-    PasswordValidator passwordValidator1 = new PasswordValidator(3,5);
-    assertFalse(passwordValidator1.isValid("22222222"));
+   // check input length
+    assertFalse(passwordValidator.isValid(""));
+    assertFalse(passwordValidator.isValid("bbbbbb"));
+  }
 
-    assertFalse(passwordValidator1.isValid(""));
+  @Test
+  public void isValid2(){
+    String invalidLowerCase = "aABCDEFG666";
+    assertEquals(false, another.isValid(invalidLowerCase));
+
+    String invalidUpperCase = "bcef123wo";
+    assertEquals(false, another.isValid(invalidUpperCase));
   }
 
   @Test
   public void testEquals() {
     assertTrue(passwordValidator.equals(passwordValidator));
     assertFalse(passwordValidator.equals(null));
-    assertFalse(passwordValidator.equals(888));
+    assertFalse(passwordValidator.equals(8880));
+    assertFalse(passwordValidator.equals(another));
 
-    assertFalse(super.equals(passwordValidator));
+    PasswordValidator copy = new PasswordValidator(8, 12);
 
-    assertFalse(passwordValidator.equals(new PasswordValidator(3, 3)));
+    copy.setMinLowerCase(2);
+    assertFalse(another.equals(copy));
 
+    copy.setMinLowerCase(4);
+    copy.setMinUpperCase(2);
+    assertFalse(another.equals(copy));
 
+    copy.setMinUpperCase(1);
+    copy.setDigits(2);
+    assertFalse(another.equals(copy));
+
+    copy.setDigits(1);
+    assertTrue(another.equals(copy));
   }
 
   @Test
   public void testHashCode() {
-    assertEquals(passwordValidator.hashCode(), 31489087);
+    assertNotEquals(passwordValidator.hashCode(), another.hashCode());
   }
 
   @Test
