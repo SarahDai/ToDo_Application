@@ -92,6 +92,7 @@ public class PasswordValidatorTest {
   @Test
   public void testHashCode() {
     assertNotEquals(passwordValidator.hashCode(), another.hashCode());
+    assertEquals(passwordValidator.hashCode(), new PasswordValidator(3,3).hashCode());
   }
 
   @Test
