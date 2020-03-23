@@ -16,15 +16,7 @@ public class TemplateParser implements ITemplateParser{
     private static final Pattern PATTERN = Pattern.compile("(\\[\\[([\\w]*)]])");
     private static final String START_SIGNAL = "[[";
 
-//    Initialization:
-//    input: a list of path of different template.
-//    process: open the template, and store all placeholders in a hashset
-
-//    Replacement:
-//    input: a hashmap <key:header, value:row_data>
-//    return a string containing the template with replaced data.
-
-//    private String path;
+    private String path;
     private String type;
     private List<String> template;
 
@@ -35,14 +27,13 @@ public class TemplateParser implements ITemplateParser{
 
     public TemplateParser(String type, String path) throws InvalidArgumentException {
         this.type = type;
-//        this.path = path;
-        this.template = this.templateProcessor(path);
+        this.path = path;
     }
 
-    private List<String> templateProcessor(String path)
-        throws InvalidArgumentException {
+    @Override
+    public void preprocessTemplate() throws InvalidArgumentException {
         List<String> template = new ArrayList<>();
-        String data = this.templateReader(path);
+        String data = this.templateReader(this.path);
         Matcher matcher = PATTERN.matcher(data);
         int start_index = 0;
         while (matcher.find()) {
@@ -51,7 +42,7 @@ public class TemplateParser implements ITemplateParser{
             start_index = matcher.end();
         }
         if (start_index < data.length()) template.add(data.substring(start_index, data.length()));
-        return template;
+        this.template = template;
     }
 
     private String templateReader(String path) throws InvalidArgumentException {
@@ -71,11 +62,6 @@ public class TemplateParser implements ITemplateParser{
     }
 
     @Override
-    public void preprocessTemplate() {
-
-    }
-
-    @Override
     public String updateTemplate(HashMap<String, String> record) throws InvalidArgumentException {
         StringBuilder output = new StringBuilder();
         for (String part : template) {
@@ -83,7 +69,7 @@ public class TemplateParser implements ITemplateParser{
                 String row = record.getOrDefault(part.substring(2), null);
                 if (row == null)
                     throw new InvalidArgumentException("Template's placeholder: " +
-                        part.substring(2) + ", cannot be found");
+                        part.substring(2) + ", cannot be found.");
                 output.append(row);
             } else {
                 output.append(part);
