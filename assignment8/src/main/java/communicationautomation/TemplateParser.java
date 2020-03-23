@@ -1,43 +1,38 @@
 package communicationautomation;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TemplateParser implements ITemplateParser{
+public class TemplateParser implements ITemplateParser {
     private static final Pattern PATTERN = Pattern.compile("(\\[\\[([\\w]*)]])");
     private static final String START_SIGNAL = "[[";
-
     private String path;
     private String type;
     private List<String> template;
 
-    public static ITemplateParser createTemplate(String type, String fileName)
-        throws InvalidArgumentException {
+    public static TemplateParser createTemplate(String type, String fileName) {
         return new TemplateParser(type, fileName);
     }
 
-    public TemplateParser(String type, String path) throws InvalidArgumentException {
+    public TemplateParser(String type, String path) {
         this.type = type;
         this.path = path;
     }
 
     @Override
     public void preprocessTemplate() throws InvalidArgumentException {
-        List<String> template = new ArrayList<>();
-        String data = this.templateReader(this.path);
+        List <String> template = new ArrayList<>();
+        String data = this.templateReader();
+        if (data == null) throw new InvalidArgumentException("Template error!");
         Matcher matcher = PATTERN.matcher(data);
         int start_index = 0;
         while (matcher.find()) {
-            template.add(data.substring(start_index, matcher.start() - 1));
+            template.add(data.substring(start_index, matcher.start()));
             template.add(START_SIGNAL + matcher.group(2));
             start_index = matcher.end();
         }
@@ -45,35 +40,42 @@ public class TemplateParser implements ITemplateParser{
         this.template = template;
     }
 
-    private String templateReader(String path) throws InvalidArgumentException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
-            String row = "";
-            while ((row = reader.readLine()) != null) {
-                row += row + '\n';
+    private String templateReader() {
+//        file cannot be found/empty/IO exception -> catch -> print out
+//        -> return null
+//        -> the preprocess function catch the null return, throw exception.
+        String row = "", data = "";
+        try (BufferedReader reader=new BufferedReader(new FileReader(this.path))) {
+            while ((row=reader.readLine()) != null) {
+                data += row + '\n';
             }
-            if (row.length() == 0)
+            if (data.length() == 0)
                 throw new InvalidArgumentException("The template file is empty.");
-            return row;
-        } catch (FileNotFoundException e) {
-            throw new InvalidArgumentException("The file is not found.");
-        } catch (IOException e) {
-            throw new InvalidArgumentException("IO exception.");
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            return null;
         }
+        return data;
     }
 
     @Override
-    public String updateTemplate(HashMap<String, String> record) throws InvalidArgumentException {
+    public String updateTemplate(HashMap<String, String> record) {
         StringBuilder output = new StringBuilder();
-        for (String part : template) {
-            if (part.startsWith(START_SIGNAL)) {
-                String row = record.getOrDefault(part.substring(2), null);
-                if (row == null)
-                    throw new InvalidArgumentException("Template's placeholder: " +
-                        part.substring(2) + ", cannot be found.");
-                output.append(row);
-            } else {
-                output.append(part);
+        try {
+            for (String part: this.template) {
+                if (part.startsWith(START_SIGNAL)) {
+                    String row = record.getOrDefault(part.substring(2), null);
+                    if (row == null)
+                        throw new InvalidArgumentException("Template's placeholder: " +
+                            part.substring(2) + ", cannot be found.");
+                    output.append(row);
+                } else {
+                    output.append(part);
+                }
             }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
         }
         return output.toString();
     }
