@@ -19,7 +19,7 @@ public class Main {
       for (Option option : templateOptions) {
         String templateType = option.getName().substring(2);
         String templateFileName = option.getArgValue();
-        ITemplateParser templateParser = TemplateParse.createTemplate(templateType, templateFileName);
+        ITemplateParser templateParser = TemplateParser.createTemplate(templateType, templateFileName);
         templateParsers.add(templateParser);
       }
 
