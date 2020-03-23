@@ -15,7 +15,6 @@ public class ValidArgs {
     this.optionTypes.put(TEMPLATE, TEMPLATE_LIST);
   }
 
-  //TODO: not hard code TEMPLATE here
   public void addOption(Option opt) {
     this.options.put(opt.getName(), opt);
     if (opt.getName().contains(TEMPLATE)) {

@@ -1,5 +1,6 @@
 package communicationautomation;
 
+import java.io.File;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -54,9 +55,14 @@ public class CommandLineParser {
       String str = iterator.next();
 
       if (isValidArg(option, str)) {
+        str = this.formatPath(str);
         option.setArgValue(str);
       }
     } else throw new InvalidArgumentException(String.format("%s provided but the required argument is not provided!", option.getName()));
+  }
+
+  private String formatPath(String str) {
+    return str.replaceAll("\\\\|/", File.separator);
   }
 
   private boolean isValidArg(Option option, String arg) throws InvalidArgumentException{
@@ -98,16 +104,32 @@ public class CommandLineParser {
     return commaSeparatedString;
   }
 
-  public static void main(String[] args) {
-
-    CommandLineParser cmd = new CommandLineParser(Rules.getOptions());
-    String[] in = {"--email-template", "email-template.txt"};
-
-    try {
-      cmd.parseCommand(in);
-    } catch (InvalidArgumentException ex) {
-      System.out.println("***OOPS! Something went wrong: " + ex.getMessage());
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    CommandLineParser that = (CommandLineParser) o;
+    return Objects.equals(options, that.options) &&
+        Objects.equals(requiredOptions, that.requiredOptions) &&
+        Objects.equals(validArgs, that.validArgs);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(options, requiredOptions, validArgs);
+  }
+
+  @Override
+  public String toString() {
+    return "CommandLineParser{" +
+        "options=" + options +
+        ", requiredOptions=" + requiredOptions +
+        ", validArgs=" + validArgs +
+        '}';
   }
 }
 

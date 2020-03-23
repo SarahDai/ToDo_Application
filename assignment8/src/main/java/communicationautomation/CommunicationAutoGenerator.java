@@ -7,10 +7,10 @@ import java.util.List;
 public class CommunicationAutoGenerator {
 
   private List<ITemplateParser> templateParsers;
-  private CSVParser csvParser;
+  private ICSVParser csvParser;
   private IDeliverHandler deliverHandler;
 
-  public CommunicationAutoGenerator(CSVParser csvParser,
+  public CommunicationAutoGenerator(ICSVParser csvParser,
       List<ITemplateParser> templateParsers,
       IDeliverHandler deliverHandler) {
     this.csvParser = csvParser;
@@ -31,8 +31,11 @@ public class CommunicationAutoGenerator {
       index++;
       for (ITemplateParser template : templateParsers) {
         String generatedTemplate = template.updateTemplate(contact);
-        deliverHandler.deliver(generatedTemplate, index, template.getTemplateType());
+        if (generatedTemplate != null) {
+          deliverHandler.deliver(generatedTemplate, index, template.getTemplateType());
+        }
       }
     }
+    System.out.println(String.format("Successfully generate files in %s folder.", deliverHandler.getOutputDir()));
   }
 }

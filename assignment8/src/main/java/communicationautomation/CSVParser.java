@@ -1,15 +1,15 @@
+package communicationautomation;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class CSVParser implements ICSVParser {
   private String CSVName;
-  private BufferReader inputFile;
+  private BufferedReader inputFile;
   private HashMap<Integer, String> headerIndexMap;
-
 
   public CSVParser(String CSVName) {
     this.CSVName = CSVName;
@@ -19,16 +19,13 @@ public class CSVParser implements ICSVParser {
     return CSVName;
   }
 
-  public BufferReader getInputFile() {
-    return inputFile;
-  }
-
   public HashMap<Integer, String> getHeaderIndexMap() {
     return headerIndexMap;
   }
 
-  public void preprocessCSV() {
+  public void preprocessCSV() throws InvalidArgumentException {
     inputFile = null;
+
     try {
       inputFile = new BufferedReader(new FileReader(this.CSVName));
 
@@ -37,25 +34,26 @@ public class CSVParser implements ICSVParser {
       String[] headers = firstLine.split(",");
       headerIndexMap = new HashMap<>();
       for (int i = 0; i < headers.length; i++) {
-        String header = headers[i].substring(1, headers[i].length() - 1);
+        String header = headers[i].replaceAll("\"", "");
         headerIndexMap.put(i, header);
       }
     } catch (FileNotFoundException fnfe) {
-      System.out.println("***OOPS! A File was Not Found: " + fnfe.getMessage());
-    } catch (IOException e) {
-      System.out.println("Something went wrong! : " + ioe.getMessage());
+      throw new InvalidArgumentException("A File was Not Found: " + fnfe.getMessage());
+    } catch (IOException ioe) {
+      throw new InvalidArgumentException("Something went wrong! : " + ioe.getMessage());
     }
   }
 
 
   public HashMap<String, String> nextRecord() {
     HashMap<String, String> record = new HashMap<>();
+
     try{
       String line;
-      while((line = this.inputFile.readline()) != null){
-        String[] columns = line.split("\", \"");
+      while((line = this.inputFile.readLine()) != null){
+        String[] columns = line.split("\",\"");
         if(columns.length != headerIndexMap.size()){
-          System.out.println(String.format(This line %s has wrong format, please check));
+          System.out.println(String.format("This line %s has wrong format. Please fix it!", line));
           continue;
         }
         for(int i = 0; i < columns.length; i++){
@@ -64,10 +62,20 @@ public class CSVParser implements ICSVParser {
         }
         break;
       }
-      if(line = null)this.closeCSV();
+      if(line == null)  this.closeCSV();
     }catch(IOException ioe){
       System.out.println("Something went wrong in close the CSV file: " + ioe.getMessage());
     }
     return record.isEmpty()? null: record;
+  }
+
+  public void closeCSV() {
+    if (inputFile != null) {
+      try {
+        inputFile.close();
+      } catch (IOException ioe) {
+        System.out.println("Something went wrong in close the CSV file: " + ioe.getMessage());
+      }
+    }
   }
 }

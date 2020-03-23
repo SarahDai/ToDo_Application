@@ -12,7 +12,7 @@ public class Main {
     try {
       ValidArgs commandLine = commandLineParser.parseCommand(args);
 
-      CSVParser csvParser = new CSVParser(commandLine.getOption("--csv-file").getArgValue());
+      ICSVParser csvParser = new CSVParser(commandLine.getOption("--csv-file").getArgValue());
       List<ITemplateParser> templateParsers = new LinkedList<>();
       List<Option> templateOptions = commandLine.getGroupOptions("template");
 

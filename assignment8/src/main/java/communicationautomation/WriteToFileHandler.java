@@ -4,33 +4,39 @@ import java.io.*;
 
 public class WriteToFileHandler implements IDeliverHandler {
 
-  private String outputPath;
+  private String outputDir;
 
-  public WriteToFileHandler(String outputPath) {
-    this.outputPath = outputPath;
+  public WriteToFileHandler(String outputDir) {
+    this.outputDir = outputDir;
   }
 
   @Override
   public void deliver(String file, int index, String fileType) {
     try {
-      String folderPath = String.format("%s%s%s", outputPath, File.separator, fileType);
+      String folderPath = String.format("%s%s%s", outputDir, File.separator, fileType);
       File fileFolder = new File(folderPath);
-      fileFolder.mkdir();
+      if (!fileFolder.exists()) {
+        fileFolder.mkdir();
+      }
+
       BufferedWriter outputFile = new BufferedWriter(
           new FileWriter(String.format("%s%s%s.txt", folderPath, File.separator, index)));
       outputFile.write(file);
       outputFile.close();
-    } catch (FileNotFoundException fnfe) {
-      System.out.println("*** OOPS! A file was not found : " + fnfe.getMessage());
     } catch (IOException ioe) {
-      System.out.println("Something went wrong! : " + ioe.getMessage());
+      System.out.println(String.format("Something went wrong in writing file %s! : %s", index, ioe.getMessage()));
     }
+  }
+
+  @Override
+  public String getOutputDir() {
+    return this.outputDir;
   }
 
   @Override
   public String toString() {
     return "WriteToFileHandler{" +
-        "outputPath='" + outputPath + '\'' +
+        "outputPath='" + outputDir + '\'' +
         '}';
   }
 
