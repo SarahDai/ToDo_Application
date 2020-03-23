@@ -5,14 +5,15 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TemplateParser {
-    private static final Pattern pattern = Pattern.compile("(\\[\\[([\\w]*)]])");
+public class TemplateParser implements ITemplateParser{
+    private static final Pattern PATTERN = Pattern.compile("(\\[\\[([\\w]*)]])");
     private static final String START_SIGNAL = "[[";
 
 //    Initialization:
@@ -22,17 +23,27 @@ public class TemplateParser {
 //    Replacement:
 //    input: a hashmap <key:header, value:row_data>
 //    return a string containing the template with replaced data.
+
+//    private String path;
+    private String type;
     private List<String> template;
 
-    public TemplateParser(String path) throws InvalidArgumentException {
-        this.template = templateProcessor(path);
+    public static ITemplateParser createTemplate(String type, String fileName)
+        throws InvalidArgumentException {
+        return new TemplateParser(type, fileName);
+    }
+
+    public TemplateParser(String type, String path) throws InvalidArgumentException {
+        this.type = type;
+//        this.path = path;
+        this.template = this.templateProcessor(path);
     }
 
     private List<String> templateProcessor(String path)
         throws InvalidArgumentException {
         List<String> template = new ArrayList<>();
         String data = this.templateReader(path);
-        Matcher matcher = pattern.matcher(data);
+        Matcher matcher = PATTERN.matcher(data);
         int start_index = 0;
         while (matcher.find()) {
             template.add(data.substring(start_index, matcher.start() - 1));
@@ -59,22 +70,30 @@ public class TemplateParser {
         }
     }
 
-    public List<String> replace(Map<String, String> map) throws InvalidArgumentException {
-        List<String> outputs = new ArrayList<>();
+    @Override
+    public void preprocessTemplate() {
 
+    }
+
+    @Override
+    public String updateTemplate(HashMap<String, String> record) throws InvalidArgumentException {
         StringBuilder output = new StringBuilder();
         for (String part : template) {
             if (part.startsWith(START_SIGNAL)) {
-                String row = map.getOrDefault(part.substring(2), null);
-                if (row == null) throw new InvalidArgumentException("Template's placeholder: " +
-                    part.substring(2) + ", cannot be found");
-                output.append(row); //replace by data from input.
+                String row = record.getOrDefault(part.substring(2), null);
+                if (row == null)
+                    throw new InvalidArgumentException("Template's placeholder: " +
+                        part.substring(2) + ", cannot be found");
+                output.append(row);
             } else {
                 output.append(part);
             }
         }
-        outputs.add(output.toString());
-        return outputs;
+        return output.toString();
     }
 
+    @Override
+    public String getTemplateType() {
+        return this.type;
+    }
 }
