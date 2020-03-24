@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 
 public class TemplateParser implements ITemplateParser {
     private static final Pattern PATTERN = Pattern.compile("(\\[\\[([\\w]*)]])");
-    private static final Pattern FILETYPE1 = Pattern.compile(".*(/|\\\\)(.+).txt");
-    private static final Pattern FILETYPE2 = Pattern.compile("(^.+).txt");
+    private static final Pattern FILETYPE1 = Pattern.compile("(^.+).txt");
+    private static final Pattern FILETYPE2 = Pattern.compile(".*(/|\\\\)(.+).txt");
     private static final String START_SIGNAL = "[[";
     private String path;
     private String type;
@@ -27,7 +27,7 @@ public class TemplateParser implements ITemplateParser {
     }
 
     @Override
-    public String preprocessTemplate() throws InvalidArgumentException {
+    public void preprocessTemplate() throws InvalidArgumentException {
         List <String> template = new ArrayList<>();
         String data = this.templateReader();
         if (data == null) throw new InvalidArgumentException("Template error!");
@@ -40,17 +40,17 @@ public class TemplateParser implements ITemplateParser {
         }
         if (start_index < data.length()) template.add(data.substring(start_index, data.length()));
         this.template = template;
-        return this.getTemplateName();
     }
 
     private String templateReader() {
 //        file cannot be found/empty/IO exception -> catch -> print out
 //        -> return null
 //        -> the preprocess function catch the null return, throw exception.
-        String row = "", data = "";
+        StringBuilder data = new StringBuilder();
+        String row = "";
         try (BufferedReader reader=new BufferedReader(new FileReader(this.path))) {
             while ((row=reader.readLine()) != null) {
-                data += row + '\n';
+                data.append(row + '\n');
             }
             if (data.length() == 0)
                 throw new InvalidArgumentException("The template file is empty.");
@@ -58,7 +58,7 @@ public class TemplateParser implements ITemplateParser {
             System.out.println(e.getMessage());
             return null;
         }
-        return data;
+        return data.toString();
     }
 
     @Override
@@ -88,12 +88,11 @@ public class TemplateParser implements ITemplateParser {
         return this.type;
     }
 
-    private String getTemplateName() {
+    public String getTemplateName() {
         Matcher matcher = FILETYPE1.matcher(this.path);
-        if (matcher.find()) return matcher.group(2);
-        matcher = FILETYPE2.matcher(this.path);
         if (matcher.find()) return matcher.group(1);
+        matcher = FILETYPE2.matcher(this.path);
+        if (matcher.find()) return matcher.group(2);
         return null;
     }
-
 }
