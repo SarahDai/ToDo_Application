@@ -10,6 +10,8 @@ import java.util.regex.Pattern;
 
 public class TemplateParser implements ITemplateParser {
     private static final Pattern PATTERN = Pattern.compile("(\\[\\[([\\w]*)]])");
+    private static final Pattern FILETYPE1 = Pattern.compile(".*(/|\\\\)(.+).txt");
+    private static final Pattern FILETYPE2 = Pattern.compile("(^.+).txt");
     private static final String START_SIGNAL = "[[";
     private String path;
     private String type;
@@ -19,13 +21,13 @@ public class TemplateParser implements ITemplateParser {
         return new TemplateParser(type, fileName);
     }
 
-    public TemplateParser(String type, String path) {
+    private TemplateParser(String type, String path) {
         this.type = type;
         this.path = path;
     }
 
     @Override
-    public void preprocessTemplate() throws InvalidArgumentException {
+    public String preprocessTemplate() throws InvalidArgumentException {
         List <String> template = new ArrayList<>();
         String data = this.templateReader();
         if (data == null) throw new InvalidArgumentException("Template error!");
@@ -38,6 +40,7 @@ public class TemplateParser implements ITemplateParser {
         }
         if (start_index < data.length()) template.add(data.substring(start_index, data.length()));
         this.template = template;
+        return this.getTemplateName();
     }
 
     private String templateReader() {
@@ -84,4 +87,13 @@ public class TemplateParser implements ITemplateParser {
     public String getTemplateType() {
         return this.type;
     }
+
+    private String getTemplateName() {
+        Matcher matcher = FILETYPE1.matcher(this.path);
+        if (matcher.find()) return matcher.group(2);
+        matcher = FILETYPE2.matcher(this.path);
+        if (matcher.find()) return matcher.group(1);
+        return null;
+    }
+
 }
