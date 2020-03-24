@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,6 +19,26 @@ public class TemplateParser implements ITemplateParser {
     private String path;
     private String type;
     private List<String> template;
+
+    /**
+     * Gets template type.
+     * @return the template type
+     */
+    @Override
+    public String getTemplateType() {
+        return this.type;
+    }
+
+    /**
+     * Gets template name.
+     * @return the template name
+     */
+    @Override
+    public String getTemplateName() {
+        Matcher matcher = FILE_TYPE.matcher(this.path);
+        if (matcher.find()) return matcher.group(3);
+        return null;
+    }
 
     /**
      * Create the template parser with the name and path.
@@ -110,24 +131,28 @@ public class TemplateParser implements ITemplateParser {
         return output.toString();
     }
 
-    /**
-     * Gets template type.
-     * @return the template type
-     */
     @Override
-    public String getTemplateType() {
-        return this.type;
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        TemplateParser that = (TemplateParser) o;
+        return Objects.equals(path, that.path);
     }
 
-    /**
-     * Gets template name.
-     * @return the template name
-     */
     @Override
-    public String getTemplateName() {
-        Matcher matcher = FILE_TYPE.matcher(this.path);
-        if (matcher.find()) return matcher.group(3);
-        return null;
+    public int hashCode() {
+        return Objects.hash(path);
     }
 
+    @Override
+    public String toString() {
+        return "TemplateParser{" +
+            "path='" + path + '\'' +
+            ", type='" + type + '\'' +
+            '}';
+    }
 }

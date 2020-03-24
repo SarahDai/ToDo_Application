@@ -12,24 +12,28 @@ import org.junit.rules.TemporaryFolder;
 
 public class TemplateParserTest {
     TemplateParser parser;
-
+    TemplateParser same;
+    TemplateParser different;
 
     @Before
     public void setUp() throws Exception {
-        parser = TemplateParser.createTemplate("test", "template_test.txt");
-
+        parser = TemplateParser.createTemplate("test",
+            "template_test.txt");
+        same = TemplateParser.createTemplate("test",
+            "template_test.txt");
+        different = TemplateParser.createTemplate("test",
+            "template_test2.txt");
     }
 
     @Test
     public void createTemplate() {
-        TemplateParser temp = TemplateParser.createTemplate("email", "email-template.txt");
+        TemplateParser temp = TemplateParser.createTemplate("email",
+            "email-template.txt");
     }
 
     @Test
     public void preprocessTemplate() throws InvalidArgumentException {
-//        TemplateParser temp = TemplateParser.createTemplate("test", "/template_test.txt");
-        TemplateParser temp = TemplateParser.createTemplate("test", "template_test2.txt");
-        temp.preprocessTemplate();
+        parser.preprocessTemplate();
     }
 
     @Test(expected = InvalidArgumentException.class)
@@ -70,7 +74,29 @@ public class TemplateParserTest {
     @Test
     public void getTemplateName() {
         assertEquals("template_test", parser.getTemplateName());
-        TemplateParser invalidName = TemplateParser.createTemplate("type", "invalid");
+        TemplateParser invalidName = TemplateParser.createTemplate("type",
+            "invalid");
         assertEquals(null, invalidName.getTemplateName());
+    }
+
+    @Test
+    public void testEquals() {
+        assertFalse(parser.equals(null));
+        assertTrue(parser.equals(parser));
+        assertTrue(parser.equals(same));
+        assertFalse(parser.equals(different));
+        assertFalse(parser.equals("template parser"));
+    }
+
+    @Test
+    public void testHashCode() {
+        assertEquals(parser.hashCode(), same.hashCode());
+        assertNotEquals(parser.hashCode(), different.hashCode());
+    }
+
+    @Test
+    public void testToString() {
+        assertEquals("TemplateParser{path='"
+            + "template_test.txt', type='test'}", parser.toString());
     }
 }
