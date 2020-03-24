@@ -51,7 +51,7 @@ public class CommunicationAutoGenerator {
         }
       }
     }
-    System.out.println(String.format("Successfully generate files in %s folder.", deliverHandler.getOutputDir()));
+    System.out.println(String.format("Successfully generate %s files in %s folder.", index * templateParsers.size(), deliverHandler.getOutputDir()));
   }
 
   @Override
