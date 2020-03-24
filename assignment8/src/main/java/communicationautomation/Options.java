@@ -163,15 +163,12 @@ public class Options {
       return false;
     }
     Options options = (Options) o;
-    return Objects.equals(allOptions, options.allOptions) &&
-        Objects.equals(optionGroups, options.optionGroups) &&
-        Objects.equals(requiredOptions, options.requiredOptions) &&
-        Objects.equals(usage, options.usage);
+    return Objects.equals(allOptions, options.allOptions);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(allOptions, optionGroups, requiredOptions, usage);
+    return Objects.hash(allOptions);
   }
 
   @Override

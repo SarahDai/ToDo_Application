@@ -66,6 +66,9 @@ public class OptionGroup {
    */
   public void setRequired(boolean required) {
     isRequired = required;
+    for(Option option: options) {
+      option.setRequired(true);
+    }
   }
 
   @Override

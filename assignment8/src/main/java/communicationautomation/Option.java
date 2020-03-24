@@ -163,12 +163,21 @@ public class Option {
   }
 
   /**
-   * Sets arg value.
+   * Sets argument value for the option.
    *
-   * @param argValue the arg value
+   * @param argValue the argument value of the option
    */
   public void setArgValue(String argValue) {
     this.argValue = argValue;
+  }
+
+  /**
+   * Set the option to be required.
+   *
+   * @param required the boolean value of whether the option is required.
+   */
+  public void setRequired(boolean required) {
+    isRequired = required;
   }
 
   @Override
