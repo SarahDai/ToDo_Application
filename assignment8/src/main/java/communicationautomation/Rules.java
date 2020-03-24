@@ -3,7 +3,7 @@ package communicationautomation;
 import java.util.regex.Pattern;
 
 public class Rules {
-    private static Options RULES = new Options();
+    private static Options RULES;
 
     private static Pattern txtPattern = Pattern.compile(".+\\.txt");
     private static Pattern csvPattern = Pattern.compile(".+\\.csv");
@@ -25,6 +25,8 @@ public class Rules {
             "--csv-file <path/to/folder> The CSV file to process. This option is required.";
 
     public static Options getOptions(){
+        RULES = new Options();
+
         emails.addOption(email);
         emails.addOption(emailTemplate);
 

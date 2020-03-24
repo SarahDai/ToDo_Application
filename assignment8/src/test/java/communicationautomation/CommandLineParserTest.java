@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class CommandLineParserTest {
+  private Options options;
   private CommandLineParser commandLineParser;
   private String[] validInput;
   private String[] missingRequired;
@@ -16,7 +17,8 @@ public class CommandLineParserTest {
 
   @Before
   public void setUp() throws Exception {
-    commandLineParser = new CommandLineParser(Rules.getOptions());
+    options = Rules.getOptions();
+    commandLineParser = new CommandLineParser(options);
     validInput = new String[]{"--csv-file", "abc.csv", "--output-dir", "user/dir","--email-template", "email-template.txt","--email"};
     missingRequired = new String[]{"--csv-file", "abc.csv"};
     missingRelated = new String[]{"--csv-file", "abc.csv", "--email-template", "email-template.txt", "--output-dir", "user/dir"};
@@ -25,14 +27,14 @@ public class CommandLineParserTest {
     unknownArgument = new String[]{"--csv-file", "abc.csv", "--output-dir", "user/dir", "--commit"};
   }
 
-//  @Test
-//  public void parseCommand() throws InvalidArgumentException {
-//    ValidArgs validArgs = commandLineParser.parseCommand(validInput);
-//
-//    assertTrue(validArgs.hasOption("--csv-file"));
-//    assertTrue(validArgs.hasOption("--output-dir"));
-//    assertTrue(validArgs.hasOption("--email"));
-//  }
+  @Test
+  public void parseCommand() throws InvalidArgumentException {
+    ValidArgs validArgs = commandLineParser.parseCommand(validInput);
+
+    assertTrue(validArgs.hasOption("--csv-file"));
+    assertTrue(validArgs.hasOption("--output-dir"));
+    assertTrue(validArgs.hasOption("--email"));
+  }
 
   @Test(expected = InvalidArgumentException.class)
   public void parseCommandMissingRequired() throws InvalidArgumentException{
@@ -67,10 +69,10 @@ public class CommandLineParserTest {
     assertTrue(commandLineParser.equals(new CommandLineParser(Rules.getOptions())));
   }
 
-//  @Test
-//  public void testHashCode() {
-//    assertEquals(commandLineParser.hashCode(), new CommandLineParser(Rules.getOptions()).hashCode());
-//  }
+  @Test
+  public void testHashCode() {
+    assertEquals(commandLineParser.hashCode(), new CommandLineParser(options).hashCode());
+  }
 
   @Test
   public void testToString() {
