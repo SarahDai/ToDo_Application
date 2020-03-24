@@ -125,7 +125,7 @@ public class CommandLineParser {
     if (!option.getPattern().matcher(arg).matches()) {
       throw new InvalidArgumentException(String.format("%s provided but the provided argument format is wrong!\nPlease provide: %s", option.getName(), option.getDescription()));
     }
-    return false;
+    return true;
   }
 
   /**
