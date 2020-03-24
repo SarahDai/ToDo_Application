@@ -55,7 +55,7 @@ public class WriteToFileHandler implements IDeliverHandler {
     String folderPath = String.format("%s%s%s", outputDir, File.separator, fileType);
     File fileFolder = new File(folderPath);
     if (!fileFolder.exists()) {
-      fileFolder.mkdir();
+      fileFolder.mkdirs();
     }
     return folderPath;
   }
