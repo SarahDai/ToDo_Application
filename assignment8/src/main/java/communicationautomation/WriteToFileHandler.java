@@ -47,11 +47,16 @@ public class WriteToFileHandler implements IDeliverHandler {
 
   /**
    * Given the fileType, get the folder path for the fileType.
+   * If the desired outputPath is not exist, we would create the folder for you and print the info.
    *
    * @param fileType the folder path for the template file type
    * @return the folder path of the template file type represented as a String
    */
   private String getTemplateFolderPath(String fileType) {
+    File outputFolder = new File(this.outputDir);
+    if (!outputFolder.exists()) {
+      System.out.println(String.format("Created %s folder for you.", this.outputDir));
+    }
     String folderPath = String.format("%s%s%s", outputDir, File.separator, fileType);
     File fileFolder = new File(folderPath);
     if (!fileFolder.exists()) {
