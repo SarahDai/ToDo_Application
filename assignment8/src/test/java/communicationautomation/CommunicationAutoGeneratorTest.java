@@ -2,6 +2,7 @@ package communicationautomation;
 
 import static org.junit.Assert.*;
 
+import com.sun.tools.jdeprscan.CSV;
 import java.lang.management.GarbageCollectorMXBean;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ public class CommunicationAutoGeneratorTest {
   public void setUp() throws Exception {
     csvParser = new CSVParser("nonprofit-supporters.csv");
     deliverHandler = new WriteToFileHandler("test");  //local directory
-    List<ITemplateParser> templateParsers = new ArrayList<>();
+    templateParsers = new ArrayList<>();
     ITemplateParser templateParser = TemplateParser.createTemplate("email-template", "email-template.txt");
     templateParsers.add(templateParser);
     generator = new CommunicationAutoGenerator(csvParser,templateParsers,deliverHandler);
@@ -34,16 +35,24 @@ public class CommunicationAutoGeneratorTest {
     assertTrue(generator.equals(generator));
     assertFalse(generator.equals(null));
     assertFalse(generator.equals(csvParser));
-//    assertTrue(generator.equals(new CommunicationAutoGenerator(csvParser,templateParsers,deliverHandler)));
+    assertTrue(generator.equals(new CommunicationAutoGenerator(csvParser,templateParsers,deliverHandler)));
+
+    CSVParser anotherCSV = new CSVParser("empty.csv");
+    assertFalse(generator.equals(new CommunicationAutoGenerator(anotherCSV,templateParsers,deliverHandler)));
+    List<ITemplateParser> anotherTemplateParsers = new ArrayList<>();
+    anotherTemplateParsers.add(TemplateParser.createTemplate("letter","letter-template.txt"));
+    assertFalse(generator.equals(new CommunicationAutoGenerator(csvParser,anotherTemplateParsers,deliverHandler)));
+    IDeliverHandler anotherWrite = new WriteToFileHandler("test2");
+    assertFalse(generator.equals(new CommunicationAutoGenerator(csvParser,templateParsers,anotherWrite)));
   }
 
   @Test
   public void testHashCode() {
-//    assertEquals(generator.hashCode(), new CommunicationAutoGenerator(csvParser,templateParsers,deliverHandler).hashCode());
+    assertEquals(generator.hashCode(), new CommunicationAutoGenerator(csvParser,templateParsers,deliverHandler).hashCode());
   }
 
   @Test
   public void testToString() {
-//    assertEquals("CommunicationAutoGenerator{templateParsers=[communicationautomation.TemplateParser@676d73c5], csvParser=communicationautomation.CSVParser@7498b4af, deliverHandler=WriteToFileHandler{outputPath=' /Users/monkey/Documents/cs5004/Team_repo_Xinyu_Dai_Lingya-_Hu_Yafei_Wang/assignment8/test'}}\n",generator);
+//    assertEquals("",generator);
   }
 }

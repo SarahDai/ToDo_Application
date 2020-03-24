@@ -93,10 +93,4 @@ public class WriteToFileHandler implements IDeliverHandler {
         "outputPath='" + outputDir + '\'' +
         '}';
   }
-
-
-  //  public static void main(String[] args) {
-//      WriteToFileHandler handler = new WriteToFileHandler("/Users/xinyu/Downloads/Assignment8");
-//      handler.deliver("test output", 0, "test");
-//  }
 }

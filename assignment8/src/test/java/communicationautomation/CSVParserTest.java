@@ -12,11 +12,13 @@ import org.junit.Test;
 public class CSVParserTest {
   private CSVParser parser;
   private CSVParser invalid;
+  private CSVParser empty;
 
   @Before
   public void setUp() throws Exception {
     parser = new CSVParser("nonprofit-supporters.csv");
     invalid = new CSVParser("abc.csv");
+    empty = new CSVParser("empty.csv");
   }
 
   @Test
@@ -71,6 +73,11 @@ public class CSVParserTest {
   @Test(expected = InvalidArgumentException.class)
   public void fileNotFoundPreprocessCSV() throws InvalidArgumentException {
     invalid.preprocessCSV();
+  }
+
+  @Test(expected = InvalidArgumentException.class)
+  public void emptyFilePreprocessCSV() throws InvalidArgumentException {
+    empty.preprocessCSV();
   }
 
   @Test

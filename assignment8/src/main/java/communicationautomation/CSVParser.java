@@ -52,6 +52,10 @@ public class CSVParser implements ICSVParser {
 
       String firstLine = inputFile.readLine();
       // split a String by ",", without changing contents in the double quotes
+      if (firstLine == null) {
+        this.closeCSV();
+        throw new InvalidArgumentException(String.format("%s is an empty file.", this.CSVName));
+      }
       String[] headers = firstLine.split("\",\"");
       headerIndexMap = new HashMap<>();
       for (int i = 0; i < headers.length; i++) {
