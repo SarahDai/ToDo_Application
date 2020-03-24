@@ -5,20 +5,40 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * The type Command line parser, parse the command line into valid arguments.
+ */
 public class CommandLineParser {
   private Options options;
   private List<String> requiredOptions;
   private ValidArgs validArgs = new ValidArgs();
 
+  /**
+   * Instantiates a new Command line parser.
+   *
+   * @param options the possible options for the command line parser
+   */
   public CommandLineParser(Options options) {
     this.setOptions(options);
   }
 
+  /**
+   * Set the possible options for the command line parser.
+   *
+   * @param options the possible options for the command line parser
+   */
   private void setOptions(Options options) {
     this.options = options;
     this.requiredOptions = new ArrayList<>(options.getRequiredOptions());
   }
 
+  /**
+   * Parse the input command line, according to the specified options.
+   *
+   * @param args the args the input command line arguments to be parsed.
+   * @return the valid arguments represented as ValidArgs object.
+   * @throws InvalidArgumentException invalid argument exception if an error occurs while parsing.
+   */
   public ValidArgs parseCommand(String[] args) throws InvalidArgumentException {
     ListIterator<String> iterator = Arrays.asList(args).listIterator();
 
@@ -36,6 +56,14 @@ public class CommandLineParser {
     return this.validArgs;
   }
 
+  /**
+   * Process the Option using the information retrieved from the arguments iterator
+   * and the specified options.
+   *
+   * @param opt the String value representing an Option.
+   * @param iterator the iterator of the command line arguments.
+   * @throws InvalidArgumentException invalid argument exception if an error occurs while processing.
+   */
   private void processOption(String opt, ListIterator<String> iterator) throws InvalidArgumentException{
     Option option = new Option(this.options.getOption(opt));
 
@@ -50,6 +78,17 @@ public class CommandLineParser {
     this.validArgs.addOption(option);
   }
 
+  /**
+   * Process and validate the argument value for the specified Option, using the information
+   * retrieved from the arguments iterator and the specified Options.
+   * Format the path argument value in this processing.
+   * Replace the input path separator with File.separator.
+   * Validate the type argument using the the information retrieved from Option required pattern.
+   *
+   * @param option the Option to be updated
+   * @param iterator the iterator of the command line arguments
+   * @throws InvalidArgumentException invalid argument exception if an error occurs while processing.
+   */
   private void processArg(Option option, ListIterator<String> iterator) throws InvalidArgumentException{
     if (iterator.hasNext()) {
       String str = iterator.next();
@@ -61,16 +100,39 @@ public class CommandLineParser {
     } else throw new InvalidArgumentException(String.format("%s provided but the required argument is not provided!", option.getName()));
   }
 
+  /**
+   * Format the input Path into Platform-Independent path in Java.
+   *
+   * @param str the argument value to be formatted
+   * @return the argument value that is independent to platform if it is a path
+   */
   private String formatPath(String str) {
     return str.replaceAll("\\\\|/", File.separator);
   }
 
+  /**
+   * Check whether the argument value is valid for a specified Option.
+   *
+   * @param option the specified Option providing the argument value format.
+   * @param arg the argument value to be checked.
+   * @return true if the required pattern is satisfied, false otherwise.
+   * @throws InvalidArgumentException invalid argument exception if an error occurs while validating.
+   */
   private boolean isValidArg(Option option, String arg) throws InvalidArgumentException{
-    if (!arg.startsWith("--") && !arg.startsWith("-") && option.getPattern().matcher(arg).matches()) {
-      return true;
-    } else throw new InvalidArgumentException(String.format("%s provided but the provided argument format is wrong!\n Please provide: %s", option.getName(), option.getDescription()));
+    if (arg.startsWith("--") || arg.startsWith("-")) {
+      throw new InvalidArgumentException(String.format("%s provided but you forgot the required argument!\nPlease provide: %s", option.getName(), option.getDescription()));
+    }
+    if (!option.getPattern().matcher(arg).matches()) {
+      throw new InvalidArgumentException(String.format("%s provided but the provided argument format is wrong!\nPlease provide: %s", option.getName(), option.getDescription()));
+    }
+    return false;
   }
 
+  /**
+   * Check whether the command line contains all required options.
+   *
+   * @throws InvalidArgumentException invalid argument exception if an error occurs while checking.
+   */
   private void checkRequiredOptions() throws InvalidArgumentException {
     if (!this.requiredOptions.isEmpty()) {
       String missingArgs = this.formatString(this.requiredOptions);
@@ -78,6 +140,11 @@ public class CommandLineParser {
     }
   }
 
+  /**
+   * Check whether the command line contains options that has relationships.
+   *
+   * @throws InvalidArgumentException invalid argument exception if an error occurs while checking.
+   */
   private void checkRelatedOptions() throws InvalidArgumentException {
     for (Option option: this.validArgs.getOptions()) {
       if (this.options.hasOptionGroup(option)) {
@@ -99,6 +166,12 @@ public class CommandLineParser {
 
   }
 
+  /**
+   * Format the list of String to be a whole String.
+   *
+   * @param information the list of String to be formatted
+   * @return the whole string containing info from the input
+   */
   private String formatString(List<String> information) {
     String commaSeparatedString = information.stream().map(i -> i.toString()).collect(Collectors.joining(", "));
     return commaSeparatedString;
@@ -113,22 +186,18 @@ public class CommandLineParser {
       return false;
     }
     CommandLineParser that = (CommandLineParser) o;
-    return Objects.equals(options, that.options) &&
-        Objects.equals(requiredOptions, that.requiredOptions) &&
-        Objects.equals(validArgs, that.validArgs);
+    return Objects.equals(options, that.options);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(options, requiredOptions, validArgs);
+    return Objects.hash(options);
   }
 
   @Override
   public String toString() {
     return "CommandLineParser{" +
         "options=" + options +
-        ", requiredOptions=" + requiredOptions +
-        ", validArgs=" + validArgs +
         '}';
   }
 }
