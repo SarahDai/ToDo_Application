@@ -2,6 +2,9 @@ package communicationautomation;
 
 import java.util.regex.Pattern;
 
+/**
+ * The config file for all command line options that the system could use.
+ */
 public class Rules {
     private static Options RULES;
 
