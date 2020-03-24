@@ -5,12 +5,27 @@ import java.util.*;
 
 /**
  * The type Options, represents a collection of Option objects, which
- * describe the possible options for a command-line..
+ * describe the possible options for a command-line.
  */
 public class Options {
+
+  /**
+   * Contains all options, with Option name as key, Option as value.
+   */
   private Map<String, Option> allOptions;
+  /**
+   * Contains all optionGroups, with OptionGroup name as key, OptionGroup as value.
+   */
   private Map<String, OptionGroup> optionGroups;
+
+  /**
+   * Store all required options name in the list.
+   */
   private List<String> requiredOptions;
+
+  /**
+   * Store the specified options specific usage.
+   */
   private String usage;
 
 
@@ -42,20 +57,20 @@ public class Options {
   }
 
   /**
-   * Has option group boolean.
+   * Check whether the Options object contains the OptionGroup of the given Option.
    *
-   * @param option the option
-   * @return the boolean
+   * @param option the option whose optionGroup to be searched.
+   * @return true if the Options contains the OptionGroup of the given Option.
    */
   public boolean hasOptionGroup(Option option) {
     return this.optionGroups.containsKey(option.getGroup());
   }
 
   /**
-   * Gets option group.
+   * Return the OptionGroup the given Option belongs to.
    *
-   * @param option the option
-   * @return the option group
+   * @param option the option whose optionGroup to be searched.
+   * @return the OptionGroup the given Option belongs to.
    */
   public OptionGroup getOptionGroup(Option option) {
     return this.optionGroups.get(option.getGroup());
@@ -71,7 +86,7 @@ public class Options {
   }
 
   /**
-   * Add option group options.
+   * Add OptionGroup into the Options object.
    *
    * @param group the group
    * @return the options
@@ -88,10 +103,10 @@ public class Options {
   }
 
   /**
-   * Add option options.
+   * Add the Option into the Options object.
    *
-   * @param option the option
-   * @return the options
+   * @param option the option to be added
+   * @return the Options object who has add the input option in.
    */
   public Options addOption(Option option) {
     if (option.isRequired()) {
@@ -102,41 +117,61 @@ public class Options {
   }
 
   /**
-   * Has option boolean.
+   * Check whether the Options has the Option with the given name.
    *
-   * @param opt the opt
-   * @return the boolean
+   * @param opt the name of the Option to be searched
+   * @return true if the Options has the Option with the given name, false otherwise
    */
   public boolean hasOption(String opt) {
     return this.allOptions.containsKey(opt);
   }
 
   /**
-   * Gets option.
+   * Gets Option with the given name.
    *
-   * @param opt the opt
-   * @return the option
+   * @param opt the name of the Option to be searched
+   * @return the Option with the given name
    */
   public Option getOption(String opt) {
     return this.allOptions.get(opt);
   }
 
   /**
-   * Sets usage.
+   * Sets usage of the Options Object.
    *
-   * @param usage the usage
+   * @param usage the usage of the possible options for a command-line.
    */
   public void setUsage(String usage) {
     this.usage = usage;
   }
 
   /**
-   * Gets usage.
+   * Gets usage of the possible options for a command-line.
    *
-   * @return the usage
+   * @return the usage the possible options for a command-line.
    */
   public String getUsage() {
     return this.usage;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Options options = (Options) o;
+    return Objects.equals(allOptions, options.allOptions) &&
+        Objects.equals(optionGroups, options.optionGroups) &&
+        Objects.equals(requiredOptions, options.requiredOptions) &&
+        Objects.equals(usage, options.usage);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(allOptions, optionGroups, requiredOptions, usage);
   }
 
   @Override

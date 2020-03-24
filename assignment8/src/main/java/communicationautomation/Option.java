@@ -1,5 +1,6 @@
 package communicationautomation;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
@@ -99,15 +100,6 @@ public class Option {
   }
 
   /**
-   * Gets opt.
-   *
-   * @return the opt
-   */
-  public String getOpt() {
-    return opt;
-  }
-
-  /**
    * Gets description.
    *
    * @return the description
@@ -177,6 +169,29 @@ public class Option {
    */
   public void setArgValue(String argValue) {
     this.argValue = argValue;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Option option = (Option) o;
+    return isRequired == option.isRequired &&
+        hasArg == option.hasArg &&
+        Objects.equals(opt, option.opt) &&
+        Objects.equals(pattern, option.pattern) &&
+        Objects.equals(argValue, option.argValue) &&
+        Objects.equals(group, option.group) &&
+        Objects.equals(description, option.description);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(opt, isRequired, hasArg, pattern, argValue, group, description);
   }
 
   @Override

@@ -47,7 +47,7 @@ public class CommunicationAutoGenerator {
       for (ITemplateParser template : templateParsers) {
         String generatedTemplate = template.updateTemplate(contact);
         if (generatedTemplate != null) {
-          deliverHandler.deliver(generatedTemplate, index, template.getTemplateType());
+          deliverHandler.deliver(generatedTemplate, index, template.getTemplateType(), template.getTemplateName());
         }
       }
     }

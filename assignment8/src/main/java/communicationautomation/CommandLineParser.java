@@ -119,7 +119,7 @@ public class CommandLineParser {
    * @throws InvalidArgumentException invalid argument exception if an error occurs while validating.
    */
   private boolean isValidArg(Option option, String arg) throws InvalidArgumentException{
-    if (arg.startsWith("--") || arg.startsWith("-")) {
+    if (arg.startsWith("--")) {
       throw new InvalidArgumentException(String.format("%s provided but you forgot the required argument!\nPlease provide: %s", option.getName(), option.getDescription()));
     }
     if (!option.getPattern().matcher(arg).matches()) {
