@@ -52,7 +52,7 @@ public class CSVParser implements ICSVParser {
 
       String firstLine = inputFile.readLine();
       // split a String by ",", without changing contents in the double quotes
-      String[] headers = firstLine.split("\"");
+      String[] headers = firstLine.split("\",\"");
       headerIndexMap = new HashMap<>();
       for (int i = 0; i < headers.length; i++) {
         String header = headers[i].replaceAll("\"", "");
