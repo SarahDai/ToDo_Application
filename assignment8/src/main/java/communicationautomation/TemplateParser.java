@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  */
 public class TemplateParser implements ITemplateParser {
     private static final Pattern PATTERN = Pattern.compile("(\\[\\[([\\w]*)]])");
-    private static final Pattern FILE_TYPE = Pattern.compile("(.+(/))?(.+).txt");
+    private static final Pattern FILE_TYPE = Pattern.compile("(.*(/))?(.+).txt");
     private static final String START_SIGNAL = "[[";
     private String path;
     private String type;
@@ -21,7 +21,6 @@ public class TemplateParser implements ITemplateParser {
 
     /**
      * Create the template parser with the name and path.
-     *
      * @param type the type of the template
      * @param path the path of the template
      * @return the template parser
@@ -42,7 +41,6 @@ public class TemplateParser implements ITemplateParser {
 
     /**
      * Preprocess template, store template information.
-     *
      * @throws InvalidArgumentException if the data in template cannot be parsed correctly
      */
     @Override
@@ -57,7 +55,7 @@ public class TemplateParser implements ITemplateParser {
             template.add(START_SIGNAL + matcher.group(2));
             start_index = matcher.end();
         }
-        if (start_index < data.length()) template.add(data.substring(start_index, data.length()));
+        if (start_index < data.length()) template.add(data.substring(start_index));
         this.template = template;
     }
 
@@ -77,6 +75,7 @@ public class TemplateParser implements ITemplateParser {
             }
             if (data.length() == 0)
                 throw new InvalidArgumentException("The template file is empty.");
+            data = data.delete(data.length() - 1, data.length());
         } catch(Exception e) {
             System.out.println(e.getMessage());
             return null;
@@ -86,7 +85,6 @@ public class TemplateParser implements ITemplateParser {
 
     /**
      * Update template string with the message.
-     *
      * @param record the hashmap contains the message
      * @return the string with the message
      */
@@ -114,7 +112,6 @@ public class TemplateParser implements ITemplateParser {
 
     /**
      * Gets template type.
-     *
      * @return the template type
      */
     @Override
@@ -124,7 +121,6 @@ public class TemplateParser implements ITemplateParser {
 
     /**
      * Gets template name.
-     *
      * @return the template name
      */
     @Override

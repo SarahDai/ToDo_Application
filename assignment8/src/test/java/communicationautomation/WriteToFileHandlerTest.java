@@ -51,6 +51,7 @@ public class WriteToFileHandlerTest {
 
     @Test
     public void getOutputDir() {
+        assertEquals(folderPath, writeHandler.getOutputDir());
     }
 
     @Test
