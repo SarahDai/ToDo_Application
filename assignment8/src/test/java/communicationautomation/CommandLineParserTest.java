@@ -11,9 +11,10 @@ public class CommandLineParserTest {
   private String[] validInput;
   private String[] missingRequired;
   private String[] missingRelated;
-  private String[] missingArgumentValue;
+  private String[] missingArgumentValueAtEnd;
   private String[] wrongArgumentFormat;
   private String[] unknownArgument;
+  private String[] missingArgumentValue;
 
   @Before
   public void setUp() throws Exception {
@@ -22,6 +23,7 @@ public class CommandLineParserTest {
     validInput = new String[]{"--csv-file", "abc.csv", "--output-dir", "user/dir","--email-template", "email-template.txt","--email"};
     missingRequired = new String[]{"--csv-file", "abc.csv"};
     missingRelated = new String[]{"--csv-file", "abc.csv", "--email-template", "email-template.txt", "--output-dir", "user/dir"};
+    missingArgumentValueAtEnd = new String[]{"--email-template", "email-template.txt", "--output-dir", "user/dir", "--csv-file"};
     missingArgumentValue = new String[]{"--csv-file", "--email-template", "email-template.txt", "--output-dir", "user/dir"};
     wrongArgumentFormat = new String[]{"--csv-file", "abc.txt", "--output-dir", "user/dir"};
     unknownArgument = new String[]{"--csv-file", "abc.csv", "--output-dir", "user/dir", "--commit"};
@@ -37,17 +39,22 @@ public class CommandLineParserTest {
   }
 
   @Test(expected = InvalidArgumentException.class)
-  public void parseCommandMissingRequired() throws InvalidArgumentException{
+  public void parseCommandMissingRequired() throws InvalidArgumentException {
     commandLineParser.parseCommand(missingRequired);
   }
 
   @Test(expected = InvalidArgumentException.class)
-  public void parseCommandMissingRelated() throws InvalidArgumentException{
+  public void parseCommandMissingRelated() throws InvalidArgumentException {
     commandLineParser.parseCommand(missingRelated);
   }
 
   @Test(expected = InvalidArgumentException.class)
-  public void parseCommandMissingArgumentValue() throws InvalidArgumentException{
+  public void parseCommandMissingArgumentValueAtEnd() throws InvalidArgumentException {
+    commandLineParser.parseCommand(missingArgumentValueAtEnd);
+  }
+
+  @Test(expected = InvalidArgumentException.class)
+  public void parseCommandMissingArgumentValue() throws InvalidArgumentException {
     commandLineParser.parseCommand(missingArgumentValue);
   }
 

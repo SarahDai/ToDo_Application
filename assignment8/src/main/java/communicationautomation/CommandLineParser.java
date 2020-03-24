@@ -2,7 +2,6 @@ package communicationautomation;
 
 import java.io.File;
 import java.util.*;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -93,10 +92,9 @@ public class CommandLineParser {
     if (iterator.hasNext()) {
       String str = iterator.next();
 
-      if (isValidArg(option, str)) {
-        str = this.formatPath(str);
-        option.setArgValue(str);
-      }
+      validateArg(option, str);
+      str = this.formatPath(str);
+      option.setArgValue(str);
     } else throw new InvalidArgumentException(String.format("%s provided but the required argument is not provided!", option.getName()));
   }
 
@@ -115,17 +113,15 @@ public class CommandLineParser {
    *
    * @param option the specified Option providing the argument value format.
    * @param arg the argument value to be checked.
-   * @return true if the required pattern is satisfied, false otherwise.
    * @throws InvalidArgumentException invalid argument exception if an error occurs while validating.
    */
-  private boolean isValidArg(Option option, String arg) throws InvalidArgumentException{
+  private void validateArg(Option option, String arg) throws InvalidArgumentException{
     if (arg.startsWith("--")) {
       throw new InvalidArgumentException(String.format("%s provided but you forgot the required argument!\nPlease provide: %s", option.getName(), option.getDescription()));
     }
     if (!option.getPattern().matcher(arg).matches()) {
       throw new InvalidArgumentException(String.format("%s provided but the provided argument format is wrong!\nPlease provide: %s", option.getName(), option.getDescription()));
     }
-    return true;
   }
 
   /**
