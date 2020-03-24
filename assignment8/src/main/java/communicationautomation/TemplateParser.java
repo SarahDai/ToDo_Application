@@ -8,24 +8,43 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * The type Template parser, parse the template to String with message.
+ */
 public class TemplateParser implements ITemplateParser {
     private static final Pattern PATTERN = Pattern.compile("(\\[\\[([\\w]*)]])");
-    private static final Pattern FILETYPE1 = Pattern.compile("(^.+).txt");
-    private static final Pattern FILETYPE2 = Pattern.compile(".*(/|\\\\)(.+).txt");
+    private static final Pattern FILE_TYPE = Pattern.compile("(.+(/))?(.+).txt");
     private static final String START_SIGNAL = "[[";
     private String path;
     private String type;
     private List<String> template;
 
-    public static TemplateParser createTemplate(String type, String fileName) {
-        return new TemplateParser(type, fileName);
+    /**
+     * Create the template parser with the name and path.
+     *
+     * @param type the type of the template
+     * @param path the path of the template
+     * @return the template parser
+     */
+    public static TemplateParser createTemplate(String type, String path) {
+        return new TemplateParser(type, path);
     }
 
+    /**
+     * The constructor to create the template parser with the name and path.
+     * @param type the type of the template
+     * @param path the path of the template
+     */
     private TemplateParser(String type, String path) {
         this.type = type;
         this.path = path;
     }
 
+    /**
+     * Preprocess template, store template information.
+     *
+     * @throws InvalidArgumentException if the data in template cannot be parsed correctly
+     */
     @Override
     public void preprocessTemplate() throws InvalidArgumentException {
         List <String> template = new ArrayList<>();
@@ -42,10 +61,14 @@ public class TemplateParser implements ITemplateParser {
         this.template = template;
     }
 
+    /**
+     * A helper method to read the template and transform a template file
+     * to a String
+     * @return a whole string of the template file or return null if there
+     * is any exception including cases such as file cannot be found,
+     * the template file is empty
+     */
     private String templateReader() {
-//        file cannot be found/empty/IO exception -> catch -> print out
-//        -> return null
-//        -> the preprocess function catch the null return, throw exception.
         StringBuilder data = new StringBuilder();
         String row = "";
         try (BufferedReader reader=new BufferedReader(new FileReader(this.path))) {
@@ -61,6 +84,12 @@ public class TemplateParser implements ITemplateParser {
         return data.toString();
     }
 
+    /**
+     * Update template string with the message.
+     *
+     * @param record the hashmap contains the message
+     * @return the string with the message
+     */
     @Override
     public String updateTemplate(HashMap<String, String> record) {
         StringBuilder output = new StringBuilder();
@@ -83,16 +112,26 @@ public class TemplateParser implements ITemplateParser {
         return output.toString();
     }
 
+    /**
+     * Gets template type.
+     *
+     * @return the template type
+     */
     @Override
     public String getTemplateType() {
         return this.type;
     }
 
+    /**
+     * Gets template name.
+     *
+     * @return the template name
+     */
+    @Override
     public String getTemplateName() {
-        Matcher matcher = FILETYPE1.matcher(this.path);
-        if (matcher.find()) return matcher.group(1);
-        matcher = FILETYPE2.matcher(this.path);
-        if (matcher.find()) return matcher.group(2);
+        Matcher matcher = FILE_TYPE.matcher(this.path);
+        if (matcher.find()) return matcher.group(3);
         return null;
     }
+
 }
