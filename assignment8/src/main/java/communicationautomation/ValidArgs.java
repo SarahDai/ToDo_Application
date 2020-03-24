@@ -3,59 +3,58 @@ package communicationautomation;
 import java.util.*;
 
 /**
- * The type Valid args.
+ * The type ValidArgs, represents arguments parsed against an Options descriptor.
  */
 public class ValidArgs {
 
   private static final String TEMPLATE = "template";
-  private static final List<Option> TEMPLATE_LIST = new ArrayList<>();
   private Map<String, Option> options;
   private Map<String, List<Option>> optionTypes;
 
   /**
-   * Instantiates a new Valid args.
+   * Instantiates a new ValidArgs object.
    */
   public ValidArgs() {
     this.options = new HashMap<>();
     this.optionTypes = new HashMap<>();
-    this.optionTypes.put(TEMPLATE, TEMPLATE_LIST);
   }
 
   /**
-   * Add option.
+   * Add the processed Option to the ValidArgs.
    *
-   * @param opt the opt
+   * @param opt the opt to be added
    */
   public void addOption(Option opt) {
     this.options.put(opt.getName(), opt);
     if (opt.getName().contains(TEMPLATE)) {
-      TEMPLATE_LIST.add(opt);
-      this.optionTypes.put(TEMPLATE, TEMPLATE_LIST);
+      List<Option> list = optionTypes.getOrDefault(TEMPLATE, new ArrayList<>());
+      list.add(opt);
+      this.optionTypes.put(TEMPLATE, list);
     }
   }
 
   /**
-   * Gets option.
+   * Gets option based on the option name.
    *
-   * @param opt the opt
-   * @return the option
+   * @param opt the name of the Option to search for
+   * @return the option with the name
    */
   public Option getOption(String opt) {
     return this.options.get(opt);
   }
 
   /**
-   * Gets group options.
+   * Gets list of options of certain type, i.e. template here.
    *
-   * @param groupType the group type
-   * @return the group options
+   * @param groupType the group type to search for
+   * @return the list of options of the type
    */
   public List<Option> getGroupOptions(String groupType) {
     return this.optionTypes.get(groupType);
   }
 
   /**
-   * Gets options.
+   * Gets all options parsed against an Options descriptor.
    *
    * @return the options
    */
@@ -64,13 +63,30 @@ public class ValidArgs {
   }
 
   /**
-   * Has option boolean.
+   * Checks whether the ValidArgs has the Option with the given name.
    *
-   * @param option the option
-   * @return the boolean
+   * @param option the name of the Option to search for
+   * @return true if the ValidArgs has the Option, false otherwise
    */
   public boolean hasOption(String option) {
     return this.options.containsKey(option);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    ValidArgs validArgs = (ValidArgs) o;
+    return Objects.equals(options, validArgs.options);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(options);
   }
 
   @Override

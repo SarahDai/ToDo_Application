@@ -41,7 +41,7 @@ public class WriteToFileHandler implements IDeliverHandler {
       outputFile.write(file);
       outputFile.close();
     } catch (IOException ioe) {
-      System.out.println(String.format("Something went wrong in writing file %s! : %s", index, ioe.getMessage()));
+      System.out.println(String.format("Something went wrong in writing file %s : %s", index, ioe.getMessage()));
     }
   }
 
