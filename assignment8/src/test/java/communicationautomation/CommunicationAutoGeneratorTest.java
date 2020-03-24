@@ -53,6 +53,6 @@ public class CommunicationAutoGeneratorTest {
 
   @Test
   public void testToString() {
-//    assertEquals("",generator);
+    assertEquals("CommunicationAutoGenerator{templateParsers=[TemplateParser{path='email-template.txt', type='email-template'}], csvParser=CSVParser{CSVName='nonprofit-supporters.csv'}, deliverHandler=WriteToFileHandler{outputPath='test'}}",generator.toString());
   }
 }
