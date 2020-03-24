@@ -2,26 +2,21 @@ package communicationautomation;
 
 import static org.junit.Assert.*;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
-import sun.jvm.hotspot.memory.HeapBlock.Header;
 
 public class CSVParserTest {
   private CSVParser parser;
-  private CSVParser parser2;
+  private CSVParser invalid;
 
   @Before
   public void setUp() throws Exception {
     parser = new CSVParser("nonprofit-supporters.csv");
-
-    parser.preprocessCSV();
-    parser2 = new CSVParser("csv");
+    invalid = new CSVParser("abc.csv");
   }
 
   @Test
@@ -30,37 +25,43 @@ public class CSVParserTest {
   }
 
   @Test
-  public void getHeaderIndexMap() throws FileNotFoundException {
-    Map<Integer, String> map = parser.getHeaderIndexMap();
+  public void getHeaderIndexMap() throws InvalidArgumentException {
+    assertEquals(null, parser.getHeaderIndexMap());
+
+    parser.preprocessCSV();
+    assertEquals(12, parser.getHeaderIndexMap().size());
   }
 
   @Test
   public void nextRecord() throws IOException, InvalidArgumentException {
-    Map<String, String> map = parser.nextRecord();
+    parser.preprocessCSV();
+    Map<String, String> firstContact = parser.nextRecord();
+    Map<Integer, String> headers = parser.getHeaderIndexMap();
 
+    //verify the columns are correctly parsed
+    String firstName = "James";
+    int firstNameIndex = 0;
+    assertEquals(firstName, firstContact.get(headers.get(firstNameIndex)));
 
-    String[] column = new String[100];
-    parser.nextRecord();
+    String companyName = "Benton, John B Jr";
+    int companyCol = 2;
+    assertEquals(companyName, firstContact.get(headers.get(companyCol)));
+
     parser.closeCSV();
-  }
-
-  @Test(expected = InvalidArgumentException.class)
-  public void closeCSV() throws IOException, InvalidArgumentException {
-    CSVParser p = new CSVParser("a");
-    p.closeCSV();
-
-    // tested exception: "A file was not found"
-    p.preprocessCSV();
   }
 
   @Test
   public void preprocessCSV() throws InvalidArgumentException {
     parser.preprocessCSV();
+    assertEquals(12, parser.getHeaderIndexMap().size());
+    assertEquals("first_name", parser.getHeaderIndexMap().get(0));
+
+    parser.closeCSV();
   }
 
-  @Test
-  public void testToString() {
-    assertNotEquals(parser.toString(), "[java.io.BufferedReader@7e829e0b]");
+  @Test(expected = InvalidArgumentException.class)
+  public void fileNotFoundPreprocessCSV() throws InvalidArgumentException {
+    invalid.preprocessCSV();
   }
 
   @Test
@@ -68,12 +69,17 @@ public class CSVParserTest {
     assertTrue(parser.equals(parser));
     assertFalse(parser.equals(null));
     assertFalse(parser.equals("000"));
-    assertFalse(parser.equals(parser2));
-    assertFalse(parser.equals(new CSVParser("csv")));
+    assertFalse(parser.equals(invalid));
+    assertTrue(invalid.equals(new CSVParser("abc.csv")));
   }
 
   @Test
   public void testHashCode() throws FileNotFoundException {
     assertEquals(parser.hashCode(), new CSVParser("nonprofit-supporters.csv").hashCode());
+  }
+
+  @Test
+  public void testToString() {
+    assertEquals("CSVParser{CSVName='nonprofit-supporters.csv'}", parser.toString());
   }
 }
