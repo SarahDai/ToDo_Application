@@ -33,7 +33,7 @@ public class CSVParserTest {
   }
 
   @Test
-  public void nextRecord() throws IOException, InvalidArgumentException {
+  public void nextRecord() throws InvalidArgumentException {
     parser.preprocessCSV();
     Map<String, String> firstContact = parser.nextRecord();
     Map<Integer, String> headers = parser.getHeaderIndexMap();
@@ -48,6 +48,15 @@ public class CSVParserTest {
     assertEquals(companyName, firstContact.get(headers.get(companyCol)));
 
     parser.closeCSV();
+  }
+
+  @Test
+  public void nextRecordSkipInvalidRow() throws InvalidArgumentException {
+    CSVParser incorrectCols = new CSVParser("incorrectColumns.csv");
+    incorrectCols.preprocessCSV();
+
+    HashMap<String, String> record = incorrectCols.nextRecord();
+    assertEquals("Josephine", record.get(incorrectCols.getHeaderIndexMap().get(0)));
   }
 
   @Test
