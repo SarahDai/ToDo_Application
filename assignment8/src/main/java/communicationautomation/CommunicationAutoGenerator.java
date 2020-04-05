@@ -35,11 +35,14 @@ public class CommunicationAutoGenerator {
    * @throws InvalidArgumentException the invalid argument exception
    */
   public void generate() throws InvalidArgumentException{
+    //Prepare the service, terminate immediately if something went wrong
     for (ITemplateParser template : templateParsers) {
       template.preprocessTemplate();
     }
     csvParser.preprocessCSV();
 
+    //Read line, update template and write
+    //If a single line went wrong, parse as much as possible and inform the wrong lines to user
     HashMap<String, String> contact;
     int index = 0;
     while ((contact = csvParser.nextRecord()) != null) {
