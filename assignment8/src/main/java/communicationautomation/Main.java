@@ -23,18 +23,18 @@ public class Main {
     try {
       ValidArgs commandLine = commandLineParser.parseCommand(args);
 
-      ICSVParser csvParser = new CSVParser(commandLine.getOption("--csv-file").getArgValue());
+      ICSVParser csvParser = new CSVParser(commandLine.getOption(Rules.CSV_FILE).getArgValue());
       List<ITemplateParser> templateParsers = new LinkedList<>();
-      List<Option> templateOptions = commandLine.getGroupOptions("template");
+      List<Option> templateOptions = commandLine.getGroupOptions(Rules.TEMPLATE);
 
       for (Option option : templateOptions) {
-        String templateType = option.getName().substring(2);
+        String templateType = option.getName().substring(Rules.OPTION_NAME_REMOVE_DASH);
         String templateFileName = option.getArgValue();
         ITemplateParser templateParser = TemplateParser.createTemplate(templateType, templateFileName);
         templateParsers.add(templateParser);
       }
 
-      IDeliverHandler deliverHandler = new WriteToFileHandler(commandLine.getOption("--output-dir").getArgValue());
+      IDeliverHandler deliverHandler = new WriteToFileHandler(commandLine.getOption(Rules.OUTPUT_DIR).getArgValue());
 
       CommunicationAutoGenerator generator = new CommunicationAutoGenerator(csvParser,
           templateParsers, deliverHandler);
