@@ -8,6 +8,9 @@ import todotrackingsystem.view.CommandLineParser;
 import todotrackingsystem.view.ValidArgs;
 import todotrackingsystem.view.Option;
 
+/**
+ * A request Controller class that controls the process of request
+ */
 public class RequestController {
   private CSVFile csvFile;
   private CommandLineParser commandLineParser;
@@ -15,6 +18,12 @@ public class RequestController {
   public RequestController(CommandLineParser commandLineParser) {
     this.commandLineParser = commandLineParser;
   }
+
+  /**
+   * A helper method that process request from command line parser
+   * @param args a String array type
+   * @throws InvalidArgumentException if unable to process request
+   */
   public void processRequests(String[] args) throws InvalidArgumentException {
     ValidArgs commands = this.commandLineParser.parseCommand(args);
     this.csvFile = CSVFile.readCSV(commands.getIndividualOption("--csv-file").getArgValue());

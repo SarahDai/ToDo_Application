@@ -9,7 +9,11 @@ import todotrackingsystem.model.ToDoItem;
 import todotrackingsystem.utils.Rules;
 import todotrackingsystem.view.DisplayToDoList;
 
+/**
+ * A DisplayRequest class that processes the display request
+ */
 public class DisplayRequest implements IRequest {
+  private static final int ONE = 1;
   private List<Option> options;
   private CSVFile csvFile;
 
@@ -18,13 +22,16 @@ public class DisplayRequest implements IRequest {
     this.csvFile = csvFile;
   }
 
+  /**
+   * A helper method that process the display request
+   */
   @Override
   public void process() {
     Map<String, String> map = new HashMap<>();
     for(Option option: options){
       map.put(option.getName(), option.getArgValue());
     }
-    if(map.size() == 1){
+    if(map.size() == ONE){
       System.out.println(DisplayToDoList.display(this.csvFile.getTodoList()));
     }else{
       List<ToDoItem> displayList = this.csvFile.getTodoList();
