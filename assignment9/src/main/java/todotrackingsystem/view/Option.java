@@ -11,8 +11,8 @@ public class Option {
   private String opt;
   private boolean isRequired;
   private boolean hasArg;
-  private Pattern pattern;
   private String argValue;
+  private Pattern pattern;
   private String group;
   private String description;
   private int numOfAppearing;
@@ -24,7 +24,9 @@ public class Option {
     private String opt;
     private boolean isRequired;
     private boolean hasArg;
+    private String argValue;
     private Pattern pattern;
+    private String group;
     private String description;
     private int numOfAppearing;
 
@@ -39,7 +41,9 @@ public class Option {
       this.description = description;
       this.isRequired = false;
       this.hasArg = false;
+      this.argValue = null;
       this.pattern = DEFAULT_PATTERN;
+      this.group = null;
       this.numOfAppearing = 1;
     }
 
@@ -99,7 +103,9 @@ public class Option {
     this.opt = builder.opt;
     this.isRequired = builder.isRequired;
     this.hasArg = builder.hasArg;
+    this.argValue = builder.argValue;
     this.pattern = builder.pattern;
+    this.group = builder.group;
     this.description = builder.description;
     this.numOfAppearing = builder.numOfAppearing;
   }
