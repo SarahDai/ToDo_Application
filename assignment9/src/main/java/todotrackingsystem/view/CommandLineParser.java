@@ -40,7 +40,8 @@ public class CommandLineParser {
    *
    * @param args the args the input command line arguments to be parsed.
    * @return the valid arguments represented as todotrackingsystem.view.ValidArgs object.
-   * @throws InvalidArgumentException invalid argument exception if an error occurs while parsing.
+   * @throws InvalidArgumentException invalid argument exception if an error occurs while
+   * parsing.
    */
   public ValidArgs parseCommand(String[] args) throws InvalidArgumentException {
     ListIterator<String> iterator = Arrays.asList(args).listIterator();
