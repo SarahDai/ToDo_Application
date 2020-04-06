@@ -8,7 +8,6 @@ import utils.InvalidArgumentException;
 public class Rules {
     private static Options RULES;
     private static Pattern csvPattern = Pattern.compile(".+\\.csv");
-//    m/d/y (0)1-12/(0)1-31/xxxx
     private static Pattern datePattern = Pattern.compile("((1[012])|(0?[1-9]))\\/((3[01])|(([12])|(0?))[1-9])\\/\\d{4}");
     private static Pattern priorityPattern = Pattern.compile("^[123]$");
     private static Pattern idPattern = Pattern.compile("^\\d+$");
@@ -24,11 +23,11 @@ public class Rules {
     private static Option completed = new Option.Builder("--completed",
         "Sets the completed status of a new todo to true.").build();
     private static Option due = new Option.Builder("--due",
-        "Sets the due date of a new todo.").setPattern(datePattern).build();
+        "mm/dd/yyyy").setPattern(datePattern).setHasArg().build();
     private static Option priority = new Option.Builder("--priority",
-        "Sets the priority of a new todo.").setPattern(priorityPattern).build();
+        "Sets the priority of a new todo.").setHasArg().setPattern(priorityPattern).build();
     private static Option category = new Option.Builder("--category",
-        "Sets the category of a new todo.").build();
+        "Sets the category of a new todo.").setHasArg().build();
     private static Option completeTodo = new Option.Builder("--complete-todo",
         "Mark the Todo with the provided ID as complete.").setRequired().setHasArg().setPattern(idPattern).build();
     private static Option display = new Option.Builder("--display",
@@ -53,8 +52,6 @@ public class Rules {
 
     public static Options getOptions() throws InvalidArgumentException {
         RULES = new Options();
-        OptionGroup inputGroup = new MutuallyDependentGroup("input", true);
-        inputGroup.addOption(input);
         MutuallyDependentGroup addTodoGroup = new MutuallyDependentGroup("addTodo", false);
         addTodoGroup.addOption(addTodo);
         addTodoGroup.addOption(todoText);
@@ -80,7 +77,7 @@ public class Rules {
         displayGroup.addConflictedOption(displayConflictedOptions);
         OptionGroup completeTodoGroup = new RepeatedGroup("completeTodo", false);
         completeTodoGroup.addOption(completeTodo);
-        RULES.addOptionGroup(inputGroup);
+        RULES.addOption(input);
         RULES.addOptionGroup(addTodoGroup);
         RULES.addOptionGroup(displayGroup);
         RULES.addOptionGroup(completeTodoGroup);

@@ -4,14 +4,14 @@ import java.util.*;
  * The type ValidArgs, represents arguments parsed against an Options descriptor.
  */
 public class ValidArgs {
-  private Map<String, Option> options;
+  private Map<String, Option> individualOptions;
   private Map<String, List<Option>> optionTypes; //groupName-options
 
   /**
    * Instantiates a new ValidArgs object.
    */
   public ValidArgs() {
-    this.options = new HashMap<>();
+    this.individualOptions = new HashMap<>();
     this.optionTypes = new HashMap<>();
   }
 
@@ -21,16 +21,25 @@ public class ValidArgs {
    * @param opt the opt to be added
    */
   public void addOption(Option opt) {
-    this.options.put(opt.getName(), opt);
     if (opt.getGroup() != null) {
       List<Option> opts = this.optionTypes.getOrDefault(opt.getGroup(), new ArrayList<>());
       opts.add(opt);
       this.optionTypes.put(opt.getGroup(), opts);
+    } else {
+      this.individualOptions.put(opt.getName(), opt);
     }
   }
 
   public Map<String, List<Option>> getOptionTypes() {
     return optionTypes;
+  }
+
+  public Option getIndividualOption(String optName) {
+    return individualOptions.get(optName);
+  }
+
+  public List<Option> getOptionGroup(String groupName) {
+    return optionTypes.get(groupName);
   }
 
   @Override
@@ -42,19 +51,19 @@ public class ValidArgs {
       return false;
     }
     ValidArgs validArgs = (ValidArgs) o;
-    return Objects.equals(options, validArgs.options) &&
+    return Objects.equals(individualOptions, validArgs.individualOptions) &&
         Objects.equals(optionTypes, validArgs.optionTypes);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(options, optionTypes);
+    return Objects.hash(individualOptions, optionTypes);
   }
 
   @Override
   public String toString() {
     return "ValidArgs{" +
-        "options=" + options +
+        "individualOptions=" + individualOptions +
         ", optionTypes=" + optionTypes +
         '}';
   }
