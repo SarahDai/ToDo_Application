@@ -15,6 +15,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
+import todotrackingsystem.model.ToDoItem.Builder;
 import todotrackingsystem.utils.InvalidArgumentException;
 import todotrackingsystem.view.DisplayToDoList;
 import todotrackingsystem.utils.Rules;
@@ -96,26 +97,37 @@ public class CSVFile {
   }
 
   private ToDoItem parseToDoItem(HashMap<String, String> mappingTable) {
-    this.currentMaxID = Math.max(Integer.parseInt(mappingTable.get("id")), currentMaxID);
+    Integer id = Integer.parseInt(mappingTable.get("id"));
+    this.currentMaxID = Math.max(id, currentMaxID);
+    String text = mappingTable.get("text");
+    ToDoItem.Builder builderOptions = new Builder(id,text);
 
+    boolean completed = Boolean.parseBoolean(mappingTable.get("completed"));
+    if (completed) builderOptions.complete();
+
+    LocalDate due = null;
     String date = mappingTable.get("due");
-    LocalDate localDate = null;
     if (date != null) {
       //Date Format: MM/DD/YYYY
       String[] dates = date.split("/");
-      localDate = LocalDate
+      due = LocalDate
           .of(Integer.parseInt(dates[2]), Integer.parseInt(dates[0]),
               Integer.parseInt(dates[1]));
+      builderOptions.setDueDate(due);
     }
 
-    Integer priority = mappingTable.get("priority") == null ? null
-        : Integer.parseInt(mappingTable.get("priority"));
+    if (mappingTable.get("priority") != null) {
+      int priority = Integer.parseInt(mappingTable.get("priority"));
+      builderOptions.setPriority(priority);
+    }
 
-    ToDoItem todo = new ToDoItem(Integer.parseInt(mappingTable.get("id")), mappingTable.get("text"),
-        Boolean.parseBoolean(mappingTable.get("completed")), localDate, priority,
-        mappingTable.get("category"));
-    this.categoryList.add(mappingTable.get("category"));
-    return todo;
+    if (mappingTable.get("category") != null) {
+      String category = mappingTable.get("category");
+      builderOptions.setCategory(category);
+      this.categoryList.add(category);
+    }
+
+    return builderOptions.build();
   }
 
   public Integer getCurrentMaxID() {
