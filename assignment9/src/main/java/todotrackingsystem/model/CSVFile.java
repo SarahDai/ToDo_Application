@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
@@ -22,7 +23,7 @@ public class CSVFile {
 
   private String csvPath;
   private HashMap<Integer, String> headerMap;
-  private TreeMap<Integer, ToDoItem> todoList;
+  private LinkedHashMap<Integer, ToDoItem> todoList;
   private String header;
   private Integer currentMaxID;
   private Set<String> categoryList;
@@ -31,7 +32,7 @@ public class CSVFile {
   private CSVFile(String csvPath) throws InvalidArgumentException {
     this.csvPath = csvPath;
     this.headerMap = new HashMap<>();
-    this.todoList = new TreeMap<>();
+    this.todoList = new LinkedHashMap<>();
     this.currentMaxID = 0;
     this.categoryList = new HashSet<>();
     this.processCSVFile();
@@ -106,6 +107,7 @@ public class CSVFile {
           .of(Integer.parseInt(dates[2]), Integer.parseInt(dates[0]),
               Integer.parseInt(dates[1]));
     }
+
     Integer priority = mappingTable.get("priority") == null ? null
         : Integer.parseInt(mappingTable.get("priority"));
 
@@ -137,7 +139,7 @@ public class CSVFile {
   }
 
   public void completeToDo(Integer id) {
-    this.todoList.get(id).completeToDo(true);
+    this.todoList.get(id).completeToDo();
   }
 
   public void saveCSVFile(String output) {
