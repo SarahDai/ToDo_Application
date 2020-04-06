@@ -1,6 +1,7 @@
 package todotrackingsystem.view;
 
 import java.util.*;
+import todotrackingsystem.utils.OptionRequestComparator;
 
 /**
  * The type ValidArgs, represents arguments parsed against an Options descriptor.
@@ -14,7 +15,7 @@ public class ValidArgs {
    */
   public ValidArgs() {
     this.individualOptions = new HashMap<>();
-    this.optionTypes = new LinkedHashMap<>();
+    this.optionTypes = new TreeMap<>(new OptionRequestComparator());
   }
 
   /**
