@@ -1,7 +1,13 @@
+package todotrackingsystem.controller;
+
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import todotrackingsystem.view.Option;
+import todotrackingsystem.model.CSVFile;
+import todotrackingsystem.utils.Rules;
+import todotrackingsystem.model.ToDoItem;
 
 public class AddRequest implements IRequest {
   private List<Option> options;
@@ -26,7 +32,8 @@ public class AddRequest implements IRequest {
       String[] dates = date.split("/");
       due = LocalDate.of(Integer.parseInt(dates[2]), Integer.parseInt(dates[0]), Integer.parseInt(dates[1]));
     }
-    Integer priority = map.get(Rules.SET_NEW_TODO_PRIORITY) == null? null : Integer.parseInt(map.get(Rules.SORT_BY_PRIORITY));
+    Integer priority = map.get(Rules.SET_NEW_TODO_PRIORITY) == null? null : Integer.parseInt(map.get(
+        Rules.SORT_BY_PRIORITY));
     String category = map.get(Rules.SET_NEW_TODO_CATEGORY);
     this.csvFile.addToDo(new ToDoItem(this.csvFile.getCurrentMaxID() + 1, text, completed, due, priority, category));
   }

@@ -1,7 +1,9 @@
+package todotrackingsystem.view;
+
 import java.util.*;
 import java.util.stream.Collectors;
-import utils.InvalidArgumentException;
-import utils.ListFormatter;
+import todotrackingsystem.utils.InvalidArgumentException;
+import todotrackingsystem.utils.ListFormatter;
 
 public abstract class OptionGroup {
   private String name;
@@ -10,7 +12,7 @@ public abstract class OptionGroup {
   private boolean isRequired;
 
   /**
-   * Instantiates a new Option group.
+   * Instantiates a new todotrackingsystem.view.Option group.
    *
    * @param name the name
    */
@@ -33,16 +35,16 @@ public abstract class OptionGroup {
     }
   }
   /**
-   * Gets name of the OptionGroup.
+   * Gets name of the todotrackingsystem.view.OptionGroup.
    *
-   * @return the name of the OptionGroup.
+   * @return the name of the todotrackingsystem.view.OptionGroup.
    */
   public String getName() {
     return this.name;
   }
 
   /**
-   * Add option into the option group, set the group name of the Option meanwhile.
+   * Add option into the option group, set the group name of the todotrackingsystem.view.Option meanwhile.
    *
    * @param option the option to be added into the option group.
    */
@@ -72,7 +74,7 @@ public abstract class OptionGroup {
       optionMap.put(name, optionMap.getOrDefault(name, 0) + 1);
       if (!checkNum(optionMap, option))
         throw new InvalidArgumentException(String.format(
-            "Option(%s) should only appears: %s times, but it appears %s times",
+            "todotrackingsystem.view.Option(%s) should only appears: %s times, but it appears %s times",
             name, option.getNumOfAppearing(), optionMap.get(name)));
     }
     List<String> leftRequiredOptions = checkRequired(optionMap);

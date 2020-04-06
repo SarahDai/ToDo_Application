@@ -1,4 +1,4 @@
-package utils;
+package todotrackingsystem.utils;
 
 /**
  * The type Invalid argument exception.

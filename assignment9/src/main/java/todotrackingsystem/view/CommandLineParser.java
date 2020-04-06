@@ -1,8 +1,11 @@
+package todotrackingsystem.view;
+
 import java.io.File;
 import java.util.*;
 import java.util.Map.Entry;
-import utils.InvalidArgumentException;
-import utils.ListFormatter;
+import todotrackingsystem.utils.InvalidArgumentException;
+import todotrackingsystem.utils.ListFormatter;
+import todotrackingsystem.utils.Rules;
 
 /**
  * The type Command line parser, parse the command line into valid arguments.
@@ -36,7 +39,7 @@ public class CommandLineParser {
    * Parse the input command line, according to the specified options.
    *
    * @param args the args the input command line arguments to be parsed.
-   * @return the valid arguments represented as ValidArgs object.
+   * @return the valid arguments represented as todotrackingsystem.view.ValidArgs object.
    * @throws InvalidArgumentException invalid argument exception if an error occurs while parsing.
    */
   public ValidArgs parseCommand(String[] args) throws InvalidArgumentException {
@@ -57,10 +60,10 @@ public class CommandLineParser {
   }
 
   /**
-   * Process the Option using the information retrieved from the arguments iterator
+   * Process the todotrackingsystem.view.Option using the information retrieved from the arguments iterator
    * and the specified options.
    *
-   * @param opt the String value representing an Option.
+   * @param opt the String value representing an todotrackingsystem.view.Option.
    * @param iterator the iterator of the command line arguments.
    * @throws InvalidArgumentException invalid argument exception if an error occurs while processing.
    */
@@ -79,13 +82,13 @@ public class CommandLineParser {
   }
 
   /**
-   * Process and validate the argument value for the specified Option, using the information
-   * retrieved from the arguments iterator and the specified Options.
+   * Process and validate the argument value for the specified todotrackingsystem.view.Option, using the information
+   * retrieved from the arguments iterator and the specified todotrackingsystem.view.Options.
    * Format the path argument value in this processing.
    * Replace the input path separator with File.separator.
-   * Validate the type argument using the the information retrieved from Option required pattern.
+   * Validate the type argument using the the information retrieved from todotrackingsystem.view.Option required pattern.
    *
-   * @param option the Option to be updated
+   * @param option the todotrackingsystem.view.Option to be updated
    * @param iterator the iterator of the command line arguments
    * @throws InvalidArgumentException invalid argument exception if an error occurs while processing.
    */
@@ -109,9 +112,9 @@ public class CommandLineParser {
   }
 
   /**
-   * Check whether the argument value is valid for a specified Option.
+   * Check whether the argument value is valid for a specified todotrackingsystem.view.Option.
    *
-   * @param option the specified Option providing the argument value format.
+   * @param option the specified todotrackingsystem.view.Option providing the argument value format.
    * @param arg the argument value to be checked.
    * @throws InvalidArgumentException invalid argument exception if an error occurs while validating.
    */

@@ -1,8 +1,10 @@
+package todotrackingsystem.view;
+
 import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
- * The type Option.
+ * The type todotrackingsystem.view.Option.
  */
 public class Option {
   private static final Pattern DEFAULT_PATTERN = Pattern.compile(".+");
@@ -66,7 +68,7 @@ public class Option {
   }
 
   /**
-   * Instantiates a new Option.
+   * Instantiates a new todotrackingsystem.view.Option.
    *
    * @param opt the opt
    */
@@ -184,7 +186,7 @@ public class Option {
 
   @Override
   public String toString() {
-    return "Option{" +
+    return "todotrackingsystem.view.Option{" +
         "opt='" + opt + '\'' +
         ", isRequired=" + isRequired +
         ", hasArg=" + hasArg +

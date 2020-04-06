@@ -1,11 +1,11 @@
+package todotrackingsystem.view;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import utils.InvalidArgumentException;
-import utils.ListFormatter;
+import todotrackingsystem.utils.InvalidArgumentException;
+import todotrackingsystem.utils.ListFormatter;
 
 public class MutuallyDependentGroup extends OptionGroup {
     private Set<String> connectedOptions;

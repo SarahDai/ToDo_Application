@@ -1,19 +1,20 @@
+package todotrackingsystem.view;
 
 import java.util.*;
 
 
 /**
- * The type Options, represents a collection of Option objects, which
+ * The type todotrackingsystem.view.Options, represents a collection of todotrackingsystem.view.Option objects, which
  * describe the possible options for a command-line.
  */
 public class Options {
 
   /**
-   * Contains all options, with Option name as key, Option as value.
+   * Contains all options, with todotrackingsystem.view.Option name as key, todotrackingsystem.view.Option as value.
    */
   private Map<String, Option> allOptions;
   /**
-   * Contains all optionGroups, with OptionGroup name as key, OptionGroup as value.
+   * Contains all optionGroups, with todotrackingsystem.view.OptionGroup name as key, todotrackingsystem.view.OptionGroup as value.
    */
   private Map<String, OptionGroup> optionGroups;
 
@@ -29,7 +30,7 @@ public class Options {
 
 
   /**
-   * Instantiates a new Options.
+   * Instantiates a new todotrackingsystem.view.Options.
    */
   public Options() {
     allOptions = new HashMap<>();
@@ -73,20 +74,20 @@ public class Options {
 
 
   /**
-   * Check whether the Options has the Option with the given name.
+   * Check whether the todotrackingsystem.view.Options has the todotrackingsystem.view.Option with the given name.
    *
-   * @param opt the name of the Option to be searched
-   * @return true if the Options has the Option with the given name, false otherwise
+   * @param opt the name of the todotrackingsystem.view.Option to be searched
+   * @return true if the todotrackingsystem.view.Options has the todotrackingsystem.view.Option with the given name, false otherwise
    */
   public boolean hasOption(String opt) {
     return this.allOptions.containsKey(opt);
   }
 
   /**
-   * Gets Option with the given name.
+   * Gets todotrackingsystem.view.Option with the given name.
    *
-   * @param opt the name of the Option to be searched
-   * @return the Option with the given name
+   * @param opt the name of the todotrackingsystem.view.Option to be searched
+   * @return the todotrackingsystem.view.Option with the given name
    */
   public Option getOption(String opt) {
     return this.allOptions.get(opt);
@@ -94,7 +95,7 @@ public class Options {
 
 
   /**
-   * Sets usage of the Options Object.
+   * Sets usage of the todotrackingsystem.view.Options Object.
    *
    * @param usage the usage of the possible options for a command-line.
    */
@@ -122,7 +123,7 @@ public class Options {
 
   @Override
   public String toString() {
-    return "Options{" +
+    return "todotrackingsystem.view.Options{" +
         "allOptions=" + allOptions +
         ", optionGroups=" + optionGroups +
         ", requiredOptions=" + requiredOptions +

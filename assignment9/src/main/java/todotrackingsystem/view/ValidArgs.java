@@ -1,14 +1,16 @@
+package todotrackingsystem.view;
+
 import java.util.*;
 
 /**
- * The type ValidArgs, represents arguments parsed against an Options descriptor.
+ * The type todotrackingsystem.view.ValidArgs, represents arguments parsed against an todotrackingsystem.view.Options descriptor.
  */
 public class ValidArgs {
   private Map<String, Option> individualOptions;
   private Map<String, List<Option>> optionTypes; //groupName-options
 
   /**
-   * Instantiates a new ValidArgs object.
+   * Instantiates a new todotrackingsystem.view.ValidArgs object.
    */
   public ValidArgs() {
     this.individualOptions = new HashMap<>();
@@ -16,7 +18,7 @@ public class ValidArgs {
   }
 
   /**
-   * Add the processed Option to the ValidArgs.
+   * Add the processed todotrackingsystem.view.Option to the todotrackingsystem.view.ValidArgs.
    *
    * @param opt the opt to be added
    */
@@ -62,7 +64,7 @@ public class ValidArgs {
 
   @Override
   public String toString() {
-    return "ValidArgs{" +
+    return "todotrackingsystem.view.ValidArgs{" +
         "individualOptions=" + individualOptions +
         ", optionTypes=" + optionTypes +
         '}';

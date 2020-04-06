@@ -1,8 +1,10 @@
+package todotrackingsystem.utils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-import utils.InvalidArgumentException;
+import todotrackingsystem.utils.InvalidArgumentException;
+import todotrackingsystem.view.*;
 
 public class Rules {
     public static final String CSV_FILE = "--csv-file";

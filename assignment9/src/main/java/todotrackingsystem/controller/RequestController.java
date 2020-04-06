@@ -1,7 +1,12 @@
-import java.util.ArrayList;
+package todotrackingsystem.controller;
+
 import java.util.List;
 import java.util.Map.Entry;
-import utils.InvalidArgumentException;
+import todotrackingsystem.model.CSVFile;
+import todotrackingsystem.utils.InvalidArgumentException;
+import todotrackingsystem.view.CommandLineParser;
+import todotrackingsystem.view.ValidArgs;
+import todotrackingsystem.view.Option;
 
 public class RequestController {
   private CSVFile csvFile;
@@ -15,7 +20,8 @@ public class RequestController {
     this.csvFile = CSVFile.readCSV(commands.getIndividualOption("--csv-file").getArgValue());
 
     for(Entry<String, List<Option>> optionGroup: commands.getOptionTypes().entrySet()){
-      IRequest request = RequestFactory.sendRequest(optionGroup.getKey(), optionGroup.getValue(), this.csvFile);
+      IRequest request = RequestFactory
+          .sendRequest(optionGroup.getKey(), optionGroup.getValue(), this.csvFile);
       if(request != null){
         request.process();
       }
