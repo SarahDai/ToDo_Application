@@ -84,4 +84,16 @@ public class Rules {
         RULES.setUsage(USAGE);
         return RULES;
     }
+
+    public static String getDefaultHeaders() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\"").append("id");
+        sb.append("\",\"").append("text");
+        sb.append("\",\"").append("completed");
+        sb.append("\",\"").append("due");
+        sb.append("\",\"").append("priority");
+        sb.append("\",\"").append("category");
+        sb.append("\"").append(System.lineSeparator());
+        return sb.toString();
+    }
 }
