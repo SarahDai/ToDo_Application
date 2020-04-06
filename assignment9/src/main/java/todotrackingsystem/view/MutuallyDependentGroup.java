@@ -3,6 +3,7 @@ package todotrackingsystem.view;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import todotrackingsystem.utils.InvalidArgumentException;
 import todotrackingsystem.utils.ListFormatter;
@@ -35,5 +36,29 @@ public class MutuallyDependentGroup extends OptionGroup {
         if (!missing.isEmpty())
             throw new InvalidArgumentException(
                 String.format("%s should be provided.", ListFormatter.format(missing)));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        MutuallyDependentGroup that = (MutuallyDependentGroup) o;
+        return Objects.equals(connectedOptions, that.connectedOptions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(connectedOptions);
+    }
+
+    @Override
+    public String toString() {
+        return "MutuallyDependentGroup{" +
+            "connectedOptions=" + connectedOptions +
+            "} " + super.toString();
     }
 }

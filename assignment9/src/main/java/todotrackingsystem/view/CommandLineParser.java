@@ -140,6 +140,10 @@ public class CommandLineParser {
   }
 
 
+  /**
+   * Check whether the options in group is valid according to each group's rule.
+   * @throws InvalidArgumentException invalid argument exception if an error occurs while checking.
+   */
   private void checkOptions() throws InvalidArgumentException {
     Map<String, List<Option>> map = this.validArgs.getOptionTypes();
     for (Entry<String, List<Option>> entry : map.entrySet()) {
@@ -148,15 +152,42 @@ public class CommandLineParser {
     }
   }
 
-  public static void main(String[] args) throws InvalidArgumentException {
-    Options options = Rules.getOptions();
-    CommandLineParser clp = new CommandLineParser(options);
-    String test1 = "--display,--sort-by-date,--sort-by-priority,--csv-file,todos.csv";
-//    String test2 = "--display,--sort-by-date,--csv-file,todos.csv";
-    String test3 = "--add-todo,--todo-text,fdd,--priority,2,--csv-file,todos.csv";
-    String[] arr = test3.split(",");
-    System.out.println(clp.parseCommand(arr));
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    CommandLineParser that = (CommandLineParser) o;
+    return Objects.equals(options, that.options) &&
+        Objects.equals(requiredOptions, that.requiredOptions) &&
+        Objects.equals(validArgs, that.validArgs);
   }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(options, requiredOptions, validArgs);
+  }
+
+  @Override
+  public String toString() {
+    return "CommandLineParser{" +
+        "options=" + options +
+        ", requiredOptions=" + requiredOptions +
+        ", validArgs=" + validArgs +
+        '}';
+  }
+  //  public static void main(String[] args) throws InvalidArgumentException {
+//    Options options = Rules.getOptions();
+//    CommandLineParser clp = new CommandLineParser(options);
+//    String test1 = "--display,--sort-by-date,--sort-by-priority,--csv-file,todos.csv";
+////    String test2 = "--display,--sort-by-date,--csv-file,todos.csv";
+//    String test3 = "--add-todo,--todo-text,text,--priority,2,--csv-file,todos.csv";
+//    String[] arr = test3.split(",");
+//    System.out.println(clp.parseCommand(arr));
+//  }
 }
 
 

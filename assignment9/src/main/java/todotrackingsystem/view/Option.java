@@ -186,7 +186,7 @@ public class Option {
 
   @Override
   public String toString() {
-    return "todotrackingsystem.view.Option{" +
+    return "Option{" +
         "opt='" + opt + '\'' +
         ", isRequired=" + isRequired +
         ", hasArg=" + hasArg +

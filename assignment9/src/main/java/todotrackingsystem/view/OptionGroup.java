@@ -102,4 +102,34 @@ public abstract class OptionGroup {
   protected List<String> flattenOptions(List<Option> options) {
     return options.stream().map(option -> option.getName()).collect(Collectors.toList());
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    OptionGroup that = (OptionGroup) o;
+    return isRequired == that.isRequired &&
+        Objects.equals(name, that.name) &&
+        Objects.equals(requiredOptions, that.requiredOptions) &&
+        Objects.equals(options, that.options);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(name, requiredOptions, options, isRequired);
+  }
+
+  @Override
+  public String toString() {
+    return "OptionGroup{" +
+        "name='" + name + '\'' +
+        ", requiredOptions=" + requiredOptions +
+        ", options=" + options +
+        ", isRequired=" + isRequired +
+        '}';
+  }
 }

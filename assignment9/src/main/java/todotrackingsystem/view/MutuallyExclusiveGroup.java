@@ -2,6 +2,7 @@ package todotrackingsystem.view;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import todotrackingsystem.utils.InvalidArgumentException;
 
@@ -36,9 +37,29 @@ public class MutuallyExclusiveGroup extends OptionGroup {
                 }
 
         }
-
-
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        MutuallyExclusiveGroup that = (MutuallyExclusiveGroup) o;
+        return Objects.equals(conflictedOptions, that.conflictedOptions);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(conflictedOptions);
+    }
+
+    @Override
+    public String toString() {
+        return "MutuallyExclusiveGroup{" +
+            "conflictedOptions=" + conflictedOptions +
+            "} " + super.toString();
+    }
 }

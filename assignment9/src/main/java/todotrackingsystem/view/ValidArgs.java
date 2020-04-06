@@ -44,6 +44,14 @@ public class ValidArgs {
     return optionTypes.get(groupName);
   }
 
+  public boolean hasIndividualOption(String optName) {
+    return this.individualOptions.containsKey(optName);
+  }
+
+  public boolean hasGroup(String groupName) {
+    return this.optionTypes.containsKey(groupName);
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
