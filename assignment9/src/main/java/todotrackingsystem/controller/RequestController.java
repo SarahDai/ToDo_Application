@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Map.Entry;
 import todotrackingsystem.model.CSVFile;
 import todotrackingsystem.utils.InvalidArgumentException;
+import todotrackingsystem.utils.Rules;
 import todotrackingsystem.view.CommandLineParser;
+import todotrackingsystem.view.DisplayToDoList;
 import todotrackingsystem.view.ValidArgs;
 import todotrackingsystem.view.Option;
 
@@ -17,7 +19,7 @@ public class RequestController {
   }
   public void processRequests(String[] args) throws InvalidArgumentException {
     ValidArgs commands = this.commandLineParser.parseCommand(args);
-    this.csvFile = CSVFile.readCSV(commands.getIndividualOption("--csv-file").getArgValue());
+    this.csvFile = CSVFile.readCSV(commands.getIndividualOption(Rules.CSV_FILE).getArgValue());
 
     for(Entry<String, List<Option>> optionGroup: commands.getOptionTypes().entrySet()){
       IRequest request = RequestFactory
@@ -30,6 +32,7 @@ public class RequestController {
       }
     }
 
+    this.csvFile.saveCSVFile(DisplayToDoList.display(this.csvFile.getTodoList()));
   }
 
 }
