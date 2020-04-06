@@ -46,7 +46,7 @@ public class Rules {
     private static Option category = new Option.Builder(SET_NEW_TODO_CATEGORY,
         "Sets the category of a new todo.").setHasArg().build();
     private static Option completeTodo = new Option.Builder(COMPLETE_REQUEST,
-        "Mark the Todo with the provided ID as complete.").setRequired().setHasArg().setPattern(idPattern).build();
+        "Mark the Todo with the provided ID as complete.").setRequired().setHasArg().setPattern(idPattern).setNumOfAppearing(Integer.MAX_VALUE).build();
     private static Option display = new Option.Builder(DISPLAY_REQUEST,
         "Display all todos.").setRequired().build();
     private static Option showIncomplete = new Option.Builder(SHOW_INCOMPLETE,
