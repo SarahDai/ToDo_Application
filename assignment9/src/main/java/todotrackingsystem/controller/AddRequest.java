@@ -33,7 +33,7 @@ public class AddRequest implements IRequest {
       due = LocalDate.of(Integer.parseInt(dates[2]), Integer.parseInt(dates[0]), Integer.parseInt(dates[1]));
     }
     Integer priority = map.get(Rules.SET_NEW_TODO_PRIORITY) == null? null : Integer.parseInt(map.get(
-        Rules.SORT_BY_PRIORITY));
+        Rules.SET_NEW_TODO_PRIORITY));
     String category = map.get(Rules.SET_NEW_TODO_CATEGORY);
     this.csvFile.addToDo(new ToDoItem(this.csvFile.getCurrentMaxID() + 1, text, completed, due, priority, category));
   }
