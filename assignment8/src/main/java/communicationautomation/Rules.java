@@ -36,7 +36,10 @@ public class Rules {
       "--output-dir <path/to/folder> The folder to store all generated files. This option is required.\n"
       +
       "--csv-file <path/to/folder> The CSV file to process. This option is required.";
-  private static final String TEMPLATE = "template";
+  public static final String TEMPLATE = "template";
+  public static final String CSV_FILE = "--csv-file";
+  public static final String OUTPUT_DIR = "--output-dir";
+  public static final int OPTION_NAME_REMOVE_DASH = 2;
 
   public static Options getOptions() {
     RULES = new Options();

@@ -7,7 +7,6 @@ import java.util.*;
  */
 public class ValidArgs {
 
-  private static final String TEMPLATE = "template";
   private Map<String, Option> options;
   private Map<String, List<Option>> optionTypes;
 
@@ -26,10 +25,10 @@ public class ValidArgs {
    */
   public void addOption(Option opt) {
     this.options.put(opt.getName(), opt);
-    if (opt.getName().contains(TEMPLATE)) {
-      List<Option> list = optionTypes.getOrDefault(TEMPLATE, new ArrayList<>());
+    if (opt.getName().contains(Rules.TEMPLATE)) {
+      List<Option> list = optionTypes.getOrDefault(Rules.TEMPLATE, new ArrayList<>());
       list.add(opt);
-      this.optionTypes.put(TEMPLATE, list);
+      this.optionTypes.put(Rules.TEMPLATE, list);
     }
   }
 
