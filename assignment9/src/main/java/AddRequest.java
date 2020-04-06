@@ -18,16 +18,16 @@ public class AddRequest implements IRequest {
     for(Option option: options){
       map.put(option.getName(), option.getArgValue());
     }
-    String text = map.get("--todo-text");
-    boolean completed = map.containsKey("--completed");
+    String text = map.get(Rules.TODO_TEXT);
+    boolean completed = map.containsKey(Rules.SET_NEW_TODO_COMPLETED);
     LocalDate due = null;
-    if(map.containsKey("--due")){
-      String date = map.get("--due");
+    if(map.containsKey(Rules.SET_NEW_TODO_DUE)){
+      String date = map.get(Rules.SET_NEW_TODO_DUE);
       String[] dates = date.split("/");
       due = LocalDate.of(Integer.parseInt(dates[2]), Integer.parseInt(dates[0]), Integer.parseInt(dates[1]));
     }
-    Integer priority = map.get("--priority") == null? null : Integer.parseInt(map.get("--priority"));
-    String category = map.get("--category");
+    Integer priority = map.get(Rules.SET_NEW_TODO_PRIORITY) == null? null : Integer.parseInt(map.get(Rules.SORT_BY_PRIORITY));
+    String category = map.get(Rules.SET_NEW_TODO_CATEGORY);
     this.csvFile.addToDo(new ToDoItem(this.csvFile.getCurrentMaxID() + 1, text, completed, due, priority, category));
   }
 }

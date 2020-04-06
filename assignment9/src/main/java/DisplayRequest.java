@@ -21,11 +21,11 @@ public class DisplayRequest implements IRequest {
       System.out.println(DisplayToDoList.display(this.csvFile.getTodoList()));
     }else{
       List<ToDoItem> displayList = this.csvFile.getTodoList();
-      if(map.containsKey("--show-incomplete")){
+      if(map.containsKey(Rules.SHOW_INCOMPLETE)){
         displayList = this.csvFile.filterIncomplete(displayList);
       }
-      if(map.containsKey("--show-category")){
-        String category = map.get("--show-category");
+      if(map.containsKey(Rules.SHOW_CATEGORY)){
+        String category = map.get(Rules.SHOW_CATEGORY);
         if(!this.csvFile.containsCategory(category)){
           throw new IllegalArgumentException(String.format("No Such category %s", category));
         }else{
@@ -36,10 +36,10 @@ public class DisplayRequest implements IRequest {
         System.out.println("There is no such todo to display, please try again!");
         return;
       }
-      if(map.containsKey("--sort-by-date")){
+      if(map.containsKey(Rules.SORT_BY_DATE)){
         displayList = this.csvFile.sortByDate(displayList);
       }
-      if(map.containsKey("--sort-by-priority")){
+      if(map.containsKey(Rules.SORT_BY_PRIORITY)){
         displayList = this.csvFile.sortByPriority(displayList);
       }
       System.out.println(DisplayToDoList.display(displayList));
