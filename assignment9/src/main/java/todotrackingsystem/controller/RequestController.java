@@ -26,7 +26,7 @@ public class RequestController {
         request.process();
       }
       else{
-        throw new IllegalArgumentException("Unknown request");
+        throw new InvalidArgumentException("Unknown request");
       }
     }
 
