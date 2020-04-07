@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 import todotrackingsystem.utils.InvalidArgumentException;
 
 /**
@@ -46,10 +45,7 @@ public class RepeatedGroup extends OptionGroup {
      */
     @Override
     public void checkValid(List<Option> options) throws InvalidArgumentException {
-        List<Option> optionsNotRepeated = options.stream().filter(
-            option -> this.repeatedOptions.contains(option)).collect(
-            Collectors.toList());
-        basicCheck(optionsNotRepeated);
+        basicCheck(options);
     }
 
     @Override
@@ -75,21 +71,4 @@ public class RepeatedGroup extends OptionGroup {
             "repeatedOptions=" + repeatedOptions +
             "} " + super.toString();
     }
-    //    public static void main(String[] args) throws InvalidArgumentException {
-//        RepeatedGroup rg = new RepeatedGroup("name", false);
-//        Option addTodo = new Option.Builder("add",
-//            "Add a new todo. If this option is provided, then --todo-text must also be "
-//                + "provided.").setRequired().build();
-//        Option todoText = new Option.Builder("text",
-//            "A description of the todo.").setRequired().setHasArg().build();
-//        rg.addOption(addTodo);
-//        rg.addOption(todoText);
-//        List<Option> addTodoConnected = new ArrayList<Option>() {{
-//            add(addTodo);
-//            add(todoText);
-//        }};
-//        rg.addRepeatedOptions(addTodoConnected);
-//        rg.checkValid(addTodoConnected);
-//    }
-
 }
