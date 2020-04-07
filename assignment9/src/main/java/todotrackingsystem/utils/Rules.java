@@ -70,7 +70,9 @@ public class Rules {
             "--csv-file <path/to/folder> The CSV file to process. This option is required. \n" +
             "--add-todo Add a new todo. If this option is provided, then --todo-text must also be provided. \n" +
             "--completed Mark the Todo with the provided ID as complete. \n" +
-            "--display Display all todos. \n";
+            "--display Display all todos. \n" +
+            "Example:\n" +
+            "--csv-file todos.csv --add-todo --todo-text \"Handin HW9\" --complete-todo 1 --display\n";
 
     /**
      * Gets the options that the system could use.

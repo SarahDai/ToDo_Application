@@ -15,7 +15,7 @@ import todotrackingsystem.utils.Rules;
 /**
  * The type CSV Parser, parse the csv file into todos list.
  */
-public class CSVParser {
+public class CSVParser implements ICSVParser{
   private String csvPath;
   private HashMap<Integer, String> headerMap;
   private String header;
@@ -52,6 +52,7 @@ public class CSVParser {
    * @return the ToDoList object
    * @throws InvalidArgumentException if there is something wrong in the processing
    */
+  @Override
   public ToDoList readCSV(String csvPath) throws InvalidArgumentException {
     this.csvPath = csvPath;
     this.toDoList = new ToDoList();
@@ -161,6 +162,7 @@ public class CSVParser {
    *
    * @param output the output content to be stored in the csv file
    */
+  @Override
   public void saveCSVFile(String csvPath, String output) {
     this.csvPath = csvPath;
     BufferedWriter outputFile = null;

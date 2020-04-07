@@ -39,46 +39,43 @@ public class DisplayRequest implements IRequest {
       map.put(option.getName(), option.getArgValue());
     }
 
-    if (map.size() == 1) {
-      System.out.println(DisplayToDoList.display(this.toDoList.getTodoList()));
-    } else {
-      List<ToDoItem> displayList = this.toDoList.getTodoList();
-      List<String> requested = new ArrayList<String>() {{
-        add(Rules.DISPLAY_REQUEST);
-      }};
-      if (map.containsKey(Rules.SHOW_INCOMPLETE)) {
-        displayList = this.toDoList.filterIncomplete(displayList);
-        requested.add(Rules.SHOW_INCOMPLETE);
-      }
-      if (map.containsKey(Rules.SHOW_CATEGORY)) {
-        String category = map.get(Rules.SHOW_CATEGORY);
-        if (!this.toDoList.containsCategory(category)) {
-          System.out.println(String.format("This is no such category: %s in the list.", category));
-          return;
-        } else {
-          displayList = this.toDoList.filterCategory(displayList, category);
-          requested.add(Rules.SHOW_CATEGORY);
-        }
-      }
-      if (displayList.isEmpty()) {
-        System.out.println("There is no such todo to display, please try again!");
-        return;
-      }
-
-      if (map.containsKey(Rules.SORT_BY_DATE)) {
-        displayList = this.toDoList.sortByDate(displayList);
-        requested.add(Rules.SORT_BY_DATE);
-      }
-
-      if (map.containsKey(Rules.SORT_BY_PRIORITY)) {
-        displayList = this.toDoList.sortByPriority(displayList);
-        requested.add(Rules.SORT_BY_PRIORITY);
-      }
-
-      System.out.println(String.format("Display todos[based on options %s]: ", ListFormatter.format(requested)));
-      System.out.print(Rules.getDefaultHeaders());
-      System.out.print(DisplayToDoList.display(displayList));
+    List<ToDoItem> displayList = this.toDoList.getTodoList();
+    List<String> requested = new ArrayList<String>() {{
+      add(Rules.DISPLAY_REQUEST);
+    }};
+    if (map.containsKey(Rules.SHOW_INCOMPLETE)) {
+      displayList = this.toDoList.filterIncomplete(displayList);
+      requested.add(Rules.SHOW_INCOMPLETE);
     }
+    if (map.containsKey(Rules.SHOW_CATEGORY)) {
+      String category = map.get(Rules.SHOW_CATEGORY);
+      if (!this.toDoList.containsCategory(category)) {
+        System.out.println(String.format("This is no such category: %s in the list.", category));
+        return;
+      } else {
+        displayList = this.toDoList.filterCategory(displayList, category);
+        requested.add(Rules.SHOW_CATEGORY);
+      }
+    }
+
+    if (map.containsKey(Rules.SORT_BY_DATE)) {
+      displayList = this.toDoList.sortByDate(displayList);
+      requested.add(Rules.SORT_BY_DATE);
+    }
+
+    if (map.containsKey(Rules.SORT_BY_PRIORITY)) {
+      displayList = this.toDoList.sortByPriority(displayList);
+      requested.add(Rules.SORT_BY_PRIORITY);
+    }
+
+    if (displayList.isEmpty()) {
+      System.out.println("There is no such todo to display, please try again!");
+      return;
+    }
+
+    System.out.println(String.format("Display todos[based on options %s]: ", ListFormatter.format(requested)));
+    System.out.print(Rules.getDefaultHeaders());
+    System.out.print(DisplayToDoList.display(displayList));
   }
 
   @Override

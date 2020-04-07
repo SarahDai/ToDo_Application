@@ -23,7 +23,9 @@ public class RequestControllerTest {
   }
 
   @Test
-  public void processRequests() {
+  public void processRequests() throws InvalidArgumentException {
+    String[] arguments = new String[]{"--csv-file", "empty.csv", "--display"};
+    controller.processRequests(arguments);
   }
 
   @Test

@@ -3,7 +3,7 @@ package todotrackingsystem.controller;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;
-import todotrackingsystem.model.CSVParser;
+import todotrackingsystem.model.ICSVParser;
 import todotrackingsystem.model.ToDoList;
 import todotrackingsystem.utils.InvalidArgumentException;
 import todotrackingsystem.utils.Rules;
@@ -16,14 +16,14 @@ import todotrackingsystem.view.Option;
  * A request Controller class that controls the process of request
  */
 public class RequestController {
-  private CSVParser csvParser;
+  private ICSVParser csvParser;
   private CommandLineParser commandLineParser;
 
   /**
    * Constructor of the class
    * @param commandLineParser a CommandLineParser object
    */
-  public RequestController(CommandLineParser commandLineParser, CSVParser csvParser) {
+  public RequestController(CommandLineParser commandLineParser, ICSVParser csvParser) {
     this.commandLineParser = commandLineParser;
     this.csvParser = csvParser;
   }

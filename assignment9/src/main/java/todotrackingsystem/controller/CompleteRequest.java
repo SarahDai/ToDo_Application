@@ -29,7 +29,6 @@ public class CompleteRequest implements IRequest {
    */
   @Override
   public void process() {
-    List<Integer> ids = new ArrayList<>();
     for(Option option: options){
       try{
         Integer id = Integer.parseInt(option.getArgValue());
