@@ -9,15 +9,26 @@ import todotrackingsystem.model.ToDoItem;
 import todotrackingsystem.utils.Rules;
 import todotrackingsystem.view.DisplayToDoList;
 
+/**
+ * A DisplayRequest class that processes the display request
+ */
 public class DisplayRequest implements IRequest {
   private List<Option> options;
   private CSVFile csvFile;
 
+  /**
+   * Constructor of the class
+   * @param options list of options
+   * @param csvFile a CSVFile object
+   */
   public DisplayRequest(List<Option> options, CSVFile csvFile) {
     this.options = options;
     this.csvFile = csvFile;
   }
 
+  /**
+   * A helper method that process the display request
+   */
   @Override
   public void process() {
     Map<String, String> map = new HashMap<>();

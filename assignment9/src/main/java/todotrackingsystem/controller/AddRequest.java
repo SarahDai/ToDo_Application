@@ -10,15 +10,26 @@ import todotrackingsystem.model.CSVFile;
 import todotrackingsystem.utils.Rules;
 import todotrackingsystem.model.ToDoItem;
 
+/**
+ * A AddRequest class that process the add request
+ */
 public class AddRequest implements IRequest {
   private List<Option> options;
   private CSVFile csvFile;
 
+  /**
+   * Constructor of the class
+   * @param options List of options
+   * @param csvFile CSVFile object
+   */
   public AddRequest(List<Option> options, CSVFile csvFile) {
     this.options = options;
     this.csvFile = csvFile;
   }
 
+  /**
+   * A helper method that process the add request
+   */
   @Override
   public void process() {
     Map<String, String> map = new HashMap<>();

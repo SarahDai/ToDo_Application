@@ -9,6 +9,9 @@ import todotrackingsystem.model.CSVFile;
 import todotrackingsystem.view.Option;
 import todotrackingsystem.utils.Rules;
 
+/**
+ * A RequestFactory class that use factory pattern to hold common rules of request
+ */
 public class RequestFactory {
   public static IRequest sendRequest(String name, List<Option> options, CSVFile csvFile){
     switch (name){
