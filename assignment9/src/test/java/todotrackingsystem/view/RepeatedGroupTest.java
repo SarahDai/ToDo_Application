@@ -20,8 +20,7 @@ public class RepeatedGroupTest {
         empty = new RepeatedGroup("name", false);
         rg = new RepeatedGroup("name", false);
         addTodo = new Option.Builder("add", "description").build();
-        required = new Option.Builder("add",
-            "description").setRequired().build();
+        required = new Option.Builder("add", "description").setRequired().build();
         rg.addOption(addTodo);
         repeatedOptions = new ArrayList<Option>() {{ add(addTodo); }};
     }
