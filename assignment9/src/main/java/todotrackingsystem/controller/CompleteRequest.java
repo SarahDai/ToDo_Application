@@ -3,7 +3,6 @@ package todotrackingsystem.controller;
 import java.util.Objects;
 import todotrackingsystem.model.ToDoList;
 import todotrackingsystem.view.Option;
-import todotrackingsystem.model.CSVFile;
 
 import java.util.ArrayList;
 import java.util.List;

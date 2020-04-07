@@ -180,15 +180,6 @@ public class CommandLineParser {
         ", validArgs=" + validArgs +
         '}';
   }
-  //  public static void main(String[] args) throws InvalidArgumentException {
-//    Options options = Rules.getOptions();
-//    CommandLineParser clp = new CommandLineParser(options);
-//    String test1 = "--display,--sort-by-date,--sort-by-priority,--csv-file,todos.csv";
-////    String test2 = "--display,--sort-by-date,--csv-file,todos.csv";
-//    String test3 = "--add-todo,--todo-text,text,--priority,2,--csv-file,todos.csv";
-//    String[] arr = test3.split(",");
-//    System.out.println(clp.parseCommand(arr));
-//  }
 }
 
 

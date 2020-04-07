@@ -72,7 +72,17 @@ public class CommandLineParserTest {
         assertTrue(commandLineParser.equals(commandLineParser));
         assertFalse(commandLineParser.equals(null));
         assertFalse(commandLineParser.equals("command"));
-        assertTrue(commandLineParser.equals(new CommandLineParser(Rules.getOptions())));
+        CommandLineParser same = new CommandLineParser(Rules.getOptions());
+        CommandLineParser diffOptions = new CommandLineParser(new Options());
+        assertTrue(commandLineParser.equals(same));
+        same.parseCommand(validInput);
+        assertFalse(validInput.equals(same));
+        assertFalse(validInput.equals(diffOptions));
+        Options opts = new Options();
+        Option opt = new Option.Builder("opt", "text").setRequired().build();
+        opts.addOption(opt);
+        assertFalse(commandLineParser.equals(new CommandLineParser(opts)));
+
     }
 
     @Test

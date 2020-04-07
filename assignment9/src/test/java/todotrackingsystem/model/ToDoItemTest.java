@@ -54,6 +54,9 @@ public class ToDoItemTest {
 
     allOptions.completeToDo();
     assertEquals(true, allOptions.isCompleted());
+    //Complete a todoItem which is already complete, will print information to the console.
+    allOptions.completeToDo();
+    assertEquals(true, allOptions.isCompleted());
   }
 
   @Test

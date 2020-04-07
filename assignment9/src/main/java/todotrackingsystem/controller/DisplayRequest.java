@@ -8,7 +8,6 @@ import java.util.Objects;
 import todotrackingsystem.model.ToDoList;
 import todotrackingsystem.utils.ListFormatter;
 import todotrackingsystem.view.Option;
-import todotrackingsystem.model.CSVFile;
 import todotrackingsystem.model.ToDoItem;
 import todotrackingsystem.utils.Rules;
 import todotrackingsystem.view.DisplayToDoList;
@@ -54,7 +53,8 @@ public class DisplayRequest implements IRequest {
       if (map.containsKey(Rules.SHOW_CATEGORY)) {
         String category = map.get(Rules.SHOW_CATEGORY);
         if (!this.toDoList.containsCategory(category)) {
-          throw new IllegalArgumentException(String.format("No Such category %s", category));
+          System.out.println(String.format("This is no such category: %s in the list.", category));
+          return;
         } else {
           displayList = this.toDoList.filterCategory(displayList, category);
           requested.add(Rules.SHOW_CATEGORY);

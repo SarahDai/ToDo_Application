@@ -3,9 +3,14 @@ package todotrackingsystem.utils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-import todotrackingsystem.utils.InvalidArgumentException;
 import todotrackingsystem.view.*;
 
+/**
+ * The config file for the system, would provide:
+ * all command line options that the system could use.
+ * the default header if the user gives an empty csv file.
+ * the requests information.
+ */
 public class Rules {
     public static final String CSV_FILE = "--csv-file";
     public static final String ADD_REQUEST = "--add-todo";
@@ -67,6 +72,12 @@ public class Rules {
             "--completed Mark the Todo with the provided ID as complete. \n" +
             "--display Display all todos. \n";
 
+    /**
+     * Gets the options that the system could use.
+     *
+     * @return the options that the system could use
+     * @throws InvalidArgumentException exception while adding options
+     */
     public static Options getOptions() throws InvalidArgumentException {
         RULES = new Options();
         MutuallyDependentGroup addTodoGroup = new MutuallyDependentGroup(ADD_REQUEST, false);
@@ -106,6 +117,11 @@ public class Rules {
         return RULES;
     }
 
+    /**
+     * Gets the default header for the user to store in the csv file,
+     * in case they don't provide, i.e provide an empty csv file.
+     * @return the default header as a string
+     */
     public static String getDefaultHeaders() {
         StringBuilder sb = new StringBuilder();
         sb.append("\"").append("id");
