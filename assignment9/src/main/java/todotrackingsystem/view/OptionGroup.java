@@ -66,6 +66,15 @@ public abstract class OptionGroup {
   }
 
   /**
+   * Check the list of options is valid according to the group's rules.
+   *
+   * @param options the options
+   * @throws InvalidArgumentException the invalid argument exception if the list of options
+   * is invalid according to the group's rules
+   */
+  public abstract void checkValid(List<Option> options) throws InvalidArgumentException;
+
+  /**
    * Basic check for list of options if they have valid repeating times and
    * the required options all appear.
    *
@@ -108,15 +117,6 @@ public abstract class OptionGroup {
     }
     return left;
   }
-
-  /**
-   * Check the list of options is valid according to the group's rules.
-   *
-   * @param options the options
-   * @throws InvalidArgumentException the invalid argument exception if the list of options
-   * is invalid according to the group's rules
-   */
-  public abstract void checkValid(List<Option> options) throws InvalidArgumentException;
 
   /**
    * Check options if they are already in .
