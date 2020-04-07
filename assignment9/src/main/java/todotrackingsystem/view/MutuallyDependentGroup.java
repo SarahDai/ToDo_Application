@@ -67,10 +67,7 @@ public class MutuallyDependentGroup extends OptionGroup {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
+        if (!super.equals(o)) {
             return false;
         }
         MutuallyDependentGroup that = (MutuallyDependentGroup) o;
@@ -79,7 +76,7 @@ public class MutuallyDependentGroup extends OptionGroup {
 
     @Override
     public int hashCode() {
-        return Objects.hash(connectedOptions);
+        return Objects.hash(super.hashCode(), connectedOptions);
     }
 
     @Override

@@ -66,10 +66,7 @@ public class MutuallyExclusiveGroup extends OptionGroup {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
+        if (!super.equals(o)) {
             return false;
         }
         MutuallyExclusiveGroup that = (MutuallyExclusiveGroup) o;
@@ -78,7 +75,7 @@ public class MutuallyExclusiveGroup extends OptionGroup {
 
     @Override
     public int hashCode() {
-        return Objects.hash(conflictedOptions);
+        return Objects.hash(super.hashCode(), conflictedOptions);
     }
 
     @Override

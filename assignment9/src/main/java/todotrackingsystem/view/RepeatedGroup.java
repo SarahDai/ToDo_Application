@@ -50,10 +50,7 @@ public class RepeatedGroup extends OptionGroup {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
+        if (!super.equals(o)) {
             return false;
         }
         RepeatedGroup that = (RepeatedGroup) o;
@@ -62,7 +59,7 @@ public class RepeatedGroup extends OptionGroup {
 
     @Override
     public int hashCode() {
-        return Objects.hash(repeatedOptions);
+        return Objects.hash(super.hashCode(), repeatedOptions);
     }
 
     @Override

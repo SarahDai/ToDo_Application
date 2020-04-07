@@ -92,8 +92,12 @@ public class Rules {
             add(sortByPriority);
         }};
         displayGroup.addConflictedOption(displayConflictedOptions);
-        OptionGroup completeTodoGroup = new RepeatedGroup(COMPLETE_REQUEST, false);
+        RepeatedGroup completeTodoGroup = new RepeatedGroup(COMPLETE_REQUEST, false);
         completeTodoGroup.addOption(completeTodo);
+        List<Option> repeatedOptions = new ArrayList<Option>() {{
+            add(completeTodo);
+        }};
+        completeTodoGroup.addRepeatedOptions(repeatedOptions);
         RULES.addOption(input);
         RULES.addOptionGroup(addTodoGroup);
         RULES.addOptionGroup(displayGroup);
