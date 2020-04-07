@@ -4,7 +4,7 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
- * The type todotrackingsystem.view.Option.
+ * The type Option.
  */
 public class Option {
   private static final Pattern DEFAULT_PATTERN = Pattern.compile(".+");
@@ -17,6 +17,9 @@ public class Option {
   private String description;
   private int numOfAppearing;
 
+  /**
+   * The type Builder.
+   */
   public static class Builder {
     private String opt;
     private boolean isRequired;
@@ -25,6 +28,12 @@ public class Option {
     private String description;
     private int numOfAppearing;
 
+    /**
+     * Instantiates a new Builder.
+     *
+     * @param opt the opt
+     * @param description the description
+     */
     public Builder(String opt, String description) {
       this.opt = opt;
       this.description = description;
@@ -34,25 +43,53 @@ public class Option {
       this.numOfAppearing = 1;
     }
 
+    /**
+     * Sets required.
+     *
+     * @return the required
+     */
     public Builder setRequired() {
       isRequired = true;
       return this;
     }
 
+    /**
+     * Sets has arg.
+     *
+     * @return the has arg
+     */
     public Builder setHasArg() {
       this.hasArg = true;
       return this;
     }
 
+    /**
+     * Sets pattern.
+     *
+     * @param pattern the pattern
+     * @return the pattern
+     */
     public Builder setPattern(Pattern pattern) {
       this.pattern = pattern;
       return this;
     }
 
+    /**
+     * Sets num of appearing.
+     *
+     * @param numOfAppearing the num of appearing
+     * @return the num of appearing
+     */
     public Builder setNumOfAppearing(int numOfAppearing) {
       this.numOfAppearing = numOfAppearing;
       return this;
     }
+
+    /**
+     * Build option.
+     *
+     * @return the option
+     */
     public Option build() {
       return new Option(this);
     }
@@ -138,14 +175,29 @@ public class Option {
   }
 
 
+  /**
+   * Gets group.
+   *
+   * @return the group
+   */
   public String getGroup() {
     return this.group;
   }
 
+  /**
+   * Gets num of appearing.
+   *
+   * @return the num of appearing
+   */
   public int getNumOfAppearing() {
     return this.numOfAppearing;
   }
 
+  /**
+   * Sets group.
+   *
+   * @param group the group
+   */
   public void setGroup(String group) {
     this.group = group;
   }
@@ -186,7 +238,7 @@ public class Option {
 
   @Override
   public String toString() {
-    return "todotrackingsystem.view.Option{" +
+    return "Option{" +
         "opt='" + opt + '\'' +
         ", isRequired=" + isRequired +
         ", hasArg=" + hasArg +

@@ -3,22 +3,22 @@ package todotrackingsystem.view;
 import java.util.*;
 
 /**
- * The type todotrackingsystem.view.ValidArgs, represents arguments parsed against an todotrackingsystem.view.Options descriptor.
+ * The type ValidArgs, represents arguments parsed against an Options descriptor.
  */
 public class ValidArgs {
   private Map<String, Option> individualOptions;
   private Map<String, List<Option>> optionTypes; //groupName-options
 
   /**
-   * Instantiates a new todotrackingsystem.view.ValidArgs object.
+   * Instantiates a new ValidArgs object.
    */
   public ValidArgs() {
     this.individualOptions = new HashMap<>();
-    this.optionTypes = new HashMap<>();
+    this.optionTypes = new LinkedHashMap<>();
   }
 
   /**
-   * Add the processed todotrackingsystem.view.Option to the todotrackingsystem.view.ValidArgs.
+   * Add the processed Option to the ValidArgs.
    *
    * @param opt the opt to be added
    */
@@ -32,16 +32,53 @@ public class ValidArgs {
     }
   }
 
+  /**
+   * Gets option types.
+   *
+   * @return the option types
+   */
   public Map<String, List<Option>> getOptionTypes() {
     return optionTypes;
   }
 
+  /**
+   * Gets individual option.
+   *
+   * @param optName the opt name
+   * @return the individual option
+   */
   public Option getIndividualOption(String optName) {
     return individualOptions.get(optName);
   }
 
+  /**
+   * Gets option group.
+   *
+   * @param groupName the group name
+   * @return the option group
+   */
   public List<Option> getOptionGroup(String groupName) {
     return optionTypes.get(groupName);
+  }
+
+  /**
+   * Check if the individual option is inside the validArgs by option name.
+   *
+   * @param optName the opt name
+   * @return true if the individual option is inside the validArgs by option name
+   */
+  public boolean hasIndividualOption(String optName) {
+    return this.individualOptions.containsKey(optName);
+  }
+
+  /**
+   * Check if the option group is inside the validArgs by group name.
+   *
+   * @param groupName the group name
+   * @return true if the option group is inside the validArgs.
+   */
+  public boolean hasGroup(String groupName) {
+    return this.optionTypes.containsKey(groupName);
   }
 
   @Override
@@ -64,7 +101,7 @@ public class ValidArgs {
 
   @Override
   public String toString() {
-    return "todotrackingsystem.view.ValidArgs{" +
+    return "ValidArgs{" +
         "individualOptions=" + individualOptions +
         ", optionTypes=" + optionTypes +
         '}';

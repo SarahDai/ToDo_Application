@@ -4,17 +4,17 @@ import java.util.*;
 
 
 /**
- * The type todotrackingsystem.view.Options, represents a collection of todotrackingsystem.view.Option objects, which
- * describe the possible options for a command-line.
+ * The type Options, represents a collection of
+ * Option objects, which describe the possible options for a command-line.
  */
 public class Options {
 
   /**
-   * Contains all options, with todotrackingsystem.view.Option name as key, todotrackingsystem.view.Option as value.
+   * Contains all options, with Option name as key, Option as value.
    */
   private Map<String, Option> allOptions;
   /**
-   * Contains all optionGroups, with todotrackingsystem.view.OptionGroup name as key, todotrackingsystem.view.OptionGroup as value.
+   * Contains all optionGroups, with OptionGroup name as key, OptionGroup as value.
    */
   private Map<String, OptionGroup> optionGroups;
 
@@ -30,7 +30,7 @@ public class Options {
 
 
   /**
-   * Instantiates a new todotrackingsystem.view.Options.
+   * Instantiates a new Options.
    */
   public Options() {
     allOptions = new HashMap<>();
@@ -38,28 +38,47 @@ public class Options {
     requiredOptions = new ArrayList<>();
   }
 
+  /**
+   * Gets all options.
+   *
+   * @return the all options
+   */
   public Map<String, Option> getAllOptions() {
     return allOptions;
   }
 
+  /**
+   * Gets option group.
+   *
+   * @param groupName the group name
+   * @return the option group
+   */
   public OptionGroup getOptionGroup(String groupName) {
     return this.optionGroups.get(groupName);
   }
 
+  /**
+   * Gets required options.
+   *
+   * @return the required options
+   */
   public List<String> getRequiredOptions() {
     return this.requiredOptions;
   }
 
+  /**
+   * Add option group.
+   * If this group is required, then add the required option in this group
+   * to the requiredOptions, If not, just add all options in this group to
+   * all options whether this option is required or not in this group.
+   * @param group the group to be added
+   */
   public void addOptionGroup(OptionGroup group) {
-//   If this group is required,
-//   then add the required option in this group to the requiredOptions
     if (group.isRequired()) {
       for (Option option: group.getOptions()) {
         this.addOption(option);
       }
     } else {
-//      If not, just add all options in this group to all options
-//      whether this option is required or not in this group
       for (Option option: group.getOptions()) {
         allOptions.put(option.getName(), option);
       }
@@ -67,6 +86,12 @@ public class Options {
     optionGroups.put(group.getName(), group);
   }
 
+  /**
+   * Add option.
+   * The option will be added to required options
+   * if it's required in this group.
+   * @param option the option
+   */
   public void addOption(Option option) {
     allOptions.put(option.getName(), option);
     if (option.isRequired()) requiredOptions.add(option.getName());
@@ -74,20 +99,22 @@ public class Options {
 
 
   /**
-   * Check whether the todotrackingsystem.view.Options has the todotrackingsystem.view.Option with the given name.
+   * Check whether the Options has the option with
+   * the given name.
    *
-   * @param opt the name of the todotrackingsystem.view.Option to be searched
-   * @return true if the todotrackingsystem.view.Options has the todotrackingsystem.view.Option with the given name, false otherwise
+   * @param opt the name of the Option to be searched
+   * @return true if the Options has the Option
+   * with the given name, false otherwise
    */
   public boolean hasOption(String opt) {
     return this.allOptions.containsKey(opt);
   }
 
   /**
-   * Gets todotrackingsystem.view.Option with the given name.
+   * Gets Option with the given name.
    *
-   * @param opt the name of the todotrackingsystem.view.Option to be searched
-   * @return the todotrackingsystem.view.Option with the given name
+   * @param opt the name of the Option to be searched
+   * @return the Option with the given name
    */
   public Option getOption(String opt) {
     return this.allOptions.get(opt);
@@ -95,7 +122,7 @@ public class Options {
 
 
   /**
-   * Sets usage of the todotrackingsystem.view.Options Object.
+   * Sets usage of the Options Object.
    *
    * @param usage the usage of the possible options for a command-line.
    */
@@ -122,8 +149,28 @@ public class Options {
   }
 
   @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Options options = (Options) o;
+    return Objects.equals(allOptions, options.allOptions) &&
+        Objects.equals(optionGroups, options.optionGroups) &&
+        Objects.equals(requiredOptions, options.requiredOptions) &&
+        Objects.equals(usage, options.usage);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(allOptions, optionGroups, requiredOptions, usage);
+  }
+
+  @Override
   public String toString() {
-    return "todotrackingsystem.view.Options{" +
+    return "Options{" +
         "allOptions=" + allOptions +
         ", optionGroups=" + optionGroups +
         ", requiredOptions=" + requiredOptions +

@@ -1,10 +1,12 @@
 package todotrackingsystem.view;
 
 import java.util.*;
-import java.util.stream.Collectors;
 import todotrackingsystem.utils.InvalidArgumentException;
 import todotrackingsystem.utils.ListFormatter;
 
+/**
+ * The type Option group.
+ */
 public abstract class OptionGroup {
   private String name;
   private List<Option> requiredOptions;
@@ -12,9 +14,10 @@ public abstract class OptionGroup {
   private boolean isRequired;
 
   /**
-   * Instantiates a new todotrackingsystem.view.Option group.
+   * Instantiates a new Option group.
    *
    * @param name the name
+   * @param isRequired the is required
    */
   public OptionGroup(String name, boolean isRequired) {
     this.name = name;
@@ -23,28 +26,18 @@ public abstract class OptionGroup {
     this.isRequired = isRequired;
   }
 
-  public void checkOptions(List<Option> options) throws InvalidArgumentException {
-    List<String> missingOptions = new ArrayList<>();
-    for (Option option : options) {
-      if (!this.options.contains(option)) missingOptions.add(option.getName());
-    }
-    if (!missingOptions.isEmpty()) {
-      throw new InvalidArgumentException(String.format(
-          "Missing %s in this group.",
-          ListFormatter.format(missingOptions)));
-    }
-  }
   /**
-   * Gets name of the todotrackingsystem.view.OptionGroup.
+   * Gets name of the OptionGroup.
    *
-   * @return the name of the todotrackingsystem.view.OptionGroup.
+   * @return the name of the OptionGroup.
    */
   public String getName() {
     return this.name;
   }
 
   /**
-   * Add option into the option group, set the group name of the todotrackingsystem.view.Option meanwhile.
+   * Add option into the option group, set the group name of the Option
+   * meanwhile.
    *
    * @param option the option to be added into the option group.
    */
@@ -54,6 +47,11 @@ public abstract class OptionGroup {
     if (option.isRequired()) requiredOptions.add(option);
   }
 
+  /**
+   * Is required boolean.
+   *
+   * @return the boolean
+   */
   public boolean isRequired() {
     return isRequired;
   }
@@ -67,6 +65,14 @@ public abstract class OptionGroup {
     return this.options;
   }
 
+  /**
+   * Basic check for list of options if they have valid repeating times and
+   * the required options all appear.
+   *
+   * @param options the options to be checked
+   * @throws InvalidArgumentException the invalid argument exception if options don't have
+   * valid repeating times or the required options don't appear completely.
+   */
   protected void basicCheck(List<Option> options) throws InvalidArgumentException {
     Map<String, Integer> optionMap = new HashMap<>();
     for (Option option : options) {
@@ -74,7 +80,7 @@ public abstract class OptionGroup {
       optionMap.put(name, optionMap.getOrDefault(name, 0) + 1);
       if (!checkNum(optionMap, option))
         throw new InvalidArgumentException(String.format(
-            "todotrackingsystem.view.Option(%s) should only appears: %s times, but it appears %s times",
+            "Option(%s) should only appears: %s times, but it appears %s times",
             name, option.getNumOfAppearing(), optionMap.get(name)));
     }
     List<String> leftRequiredOptions = checkRequired(optionMap);
@@ -85,21 +91,78 @@ public abstract class OptionGroup {
     }
   }
 
+  /**
+   * check if the repeating times of the option is smaller than the limit set.
+   * @param map recording the repeating times of all options
+   * @param option to be checked
+   * @return true if the repeating times of the option is smaller than the limit set
+   */
   private boolean checkNum(Map<String, Integer> map, Option option) {
     return map.get(option.getName()) <= option.getNumOfAppearing();
   }
 
   private List<String> checkRequired(Map<String, Integer> map) {
-    List<String> left = flattenOptions(this.requiredOptions);
+    List<String> left = new ArrayList<>();
     for (Option option: this.requiredOptions) {
-      if (map.containsKey(option.getName())) left.remove(option.getName());
+      if (!map.containsKey(option.getName())) left.add(option.getName());
     }
     return left;
   }
 
+  /**
+   * Check the list of options is valid according to the group's rules.
+   *
+   * @param options the options
+   * @throws InvalidArgumentException the invalid argument exception if the list of options
+   * is invalid according to the group's rules
+   */
   public abstract void checkValid(List<Option> options) throws InvalidArgumentException;
 
-  protected List<String> flattenOptions(List<Option> options) {
-    return options.stream().map(option -> option.getName()).collect(Collectors.toList());
+  /**
+   * Check options if they are already in .
+   *
+   * @param options the options
+   * @throws InvalidArgumentException the invalid argument exception
+   */
+  public void checkOptions(List<Option> options) throws InvalidArgumentException {
+    List<String> missingOptions = new ArrayList<>();
+    for (Option option : options) {
+      if (!this.options.contains(option)) missingOptions.add(option.getName());
+    }
+    if (!missingOptions.isEmpty()) {
+      throw new InvalidArgumentException(String.format(
+          "Missing %s in this group.",
+          ListFormatter.format(missingOptions)));
+    }
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    OptionGroup that = (OptionGroup) o;
+    return isRequired == that.isRequired &&
+        Objects.equals(name, that.name) &&
+        Objects.equals(requiredOptions, that.requiredOptions) &&
+        Objects.equals(options, that.options);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(name, requiredOptions, options, isRequired);
+  }
+
+  @Override
+  public String toString() {
+    return "OptionGroup{" +
+        "name='" + name + '\'' +
+        ", requiredOptions=" + requiredOptions +
+        ", options=" + options +
+        ", isRequired=" + isRequired +
+        '}';
   }
 }
