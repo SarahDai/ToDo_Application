@@ -54,14 +54,17 @@ public class CSVParser {
    */
   public ToDoList readCSV(String csvPath) throws InvalidArgumentException {
     this.csvPath = csvPath;
+    this.toDoList = new ToDoList();
 
     BufferedReader inputFile = null;
     try {
       inputFile = new BufferedReader(new FileReader(this.csvPath));
 
       String line = inputFile.readLine();
-      if (line == null)
-        return this.toDoList;  // Empty CSV file, no need for processing.
+      if (line == null) {
+        inputFile.close();
+        return this.toDoList;
+      }  // Empty CSV file, no need for processing.
       this.processHeader(line);
       while ((line = inputFile.readLine()) != null) {
         this.processToDoItem(line);
@@ -122,7 +125,7 @@ public class CSVParser {
    */
   private ToDoItem parseToDoItem(HashMap<String, String> mappingTable) {
     Integer id = Integer.parseInt(mappingTable.get("id"));
-    this.toDoList.updateCurrentMaxID(id);
+
     String text = mappingTable.get("text");
     ToDoItem.Builder builderOptions = new Builder(id,text);
 
@@ -148,7 +151,6 @@ public class CSVParser {
     if (mappingTable.get("category") != null) {
       String category = mappingTable.get("category");
       builderOptions.setCategory(category);
-      this.toDoList.addCategory(category);
     }
 
     return builderOptions.build();
@@ -157,9 +159,10 @@ public class CSVParser {
   /**
    * Write the output back into the csv file.
    *
-   * @param output the output to be stored in the csv file
+   * @param output the output content to be stored in the csv file
    */
-  public void saveCSVFile(String output) {
+  public void saveCSVFile(String csvPath, String output) {
+    this.csvPath = csvPath;
     BufferedWriter outputFile = null;
 
     try {

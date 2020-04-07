@@ -34,7 +34,8 @@ public class RequestController {
    */
   public void processRequests(String[] args) throws InvalidArgumentException {
     ValidArgs commands = this.commandLineParser.parseCommand(args);
-    ToDoList toDoList = csvParser.readCSV(commands.getIndividualOption(Rules.CSV_FILE).getArgValue());
+    String csvPath = commands.getIndividualOption(Rules.CSV_FILE).getArgValue();
+    ToDoList toDoList = csvParser.readCSV(csvPath);
 
     for(Entry<String, List<Option>> optionGroup: commands.getOptionTypes().entrySet()){
       IRequest request = RequestFactory
@@ -47,6 +48,6 @@ public class RequestController {
       }
     }
 
-    this.csvParser.saveCSVFile(DisplayToDoList.display(toDoList.getTodoList()));
+    this.csvParser.saveCSVFile(csvPath, DisplayToDoList.display(toDoList.getTodoList()));
   }
 }

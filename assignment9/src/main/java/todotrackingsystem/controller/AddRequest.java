@@ -7,7 +7,6 @@ import java.util.Map;
 import todotrackingsystem.model.ToDoItem.Builder;
 import todotrackingsystem.model.ToDoList;
 import todotrackingsystem.view.Option;
-import todotrackingsystem.model.CSVFile;
 import todotrackingsystem.utils.Rules;
 import todotrackingsystem.model.ToDoItem;
 

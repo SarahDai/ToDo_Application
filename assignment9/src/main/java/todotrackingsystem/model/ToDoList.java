@@ -30,7 +30,7 @@ public class ToDoList {
    *
    * @param id the id to be checked
    */
-  public void updateCurrentMaxID(int id) {
+  private void updateCurrentMaxID(int id) {
     this.currentMaxID = Math.max(id, this.currentMaxID);
   }
 
@@ -53,6 +53,16 @@ public class ToDoList {
   }
 
   /**
+   * Gives the ToDoItem based on the specified id.
+   *
+   * @param id the ToDoItem with the id to search for
+   * @return the ToDoItem with the id
+   */
+  public ToDoItem getToDoItem(Integer id) {
+    return this.todoList.get(id);
+  }
+
+  /**
    * Add existing todoitem to the todoList.
    *
    * @param id   the id
@@ -60,6 +70,10 @@ public class ToDoList {
    */
   public void addExistingToDo(int id, ToDoItem todo) {
     this.todoList.put(id, todo);
+    this.updateCurrentMaxID(id);
+    if (todo.getCategory() != null) {
+      this.addCategory(todo.getCategory());
+    }
   }
 
   /**
@@ -69,6 +83,9 @@ public class ToDoList {
    */
   public void addNewToDo(ToDoItem todo) {
     this.todoList.put(++this.currentMaxID, todo);
+    if (todo.getCategory() != null) {
+      this.addCategory(todo.getCategory());
+    }
   }
 
   /**
@@ -86,7 +103,7 @@ public class ToDoList {
    *
    * @param category the category to be added
    */
-  public void addCategory(String category) {
+  private void addCategory(String category) {
     this.categoryList.add(category);
   }
 
@@ -135,6 +152,7 @@ public class ToDoList {
   public List<ToDoItem> filterCategory(List<ToDoItem> toDoItemList, String category) {
     List<ToDoItem> categoryToDoItemList = new ArrayList<>();
     for (ToDoItem todo: toDoItemList) {
+      if (todo.getCategory() == null) continue;
       if (todo.getCategory().equals(category)) {
         categoryToDoItemList.add(todo);
       }
