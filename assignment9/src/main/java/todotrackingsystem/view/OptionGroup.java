@@ -124,7 +124,7 @@ public abstract class OptionGroup {
    * @param options the options
    * @throws InvalidArgumentException the invalid argument exception
    */
-  public void checkOptions(List<Option> options) throws InvalidArgumentException {
+  protected void checkOptions(List<Option> options) throws InvalidArgumentException {
     List<String> missingOptions = new ArrayList<>();
     for (Option option : options) {
       if (!this.options.contains(option)) missingOptions.add(option.getName());
