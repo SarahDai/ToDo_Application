@@ -1,5 +1,6 @@
 package todotrackingsystem.controller;
 
+import todotrackingsystem.model.ToDoList;
 import todotrackingsystem.view.Option;
 import todotrackingsystem.model.CSVFile;
 
@@ -11,16 +12,16 @@ import java.util.List;
  */
 public class CompleteRequest implements IRequest {
   private List<Option> options;
-  private CSVFile csvFile;
+  private ToDoList toDoList;
 
   /**
    * Constructor of the class
    * @param options list of options
-   * @param csvFile CSVFile object
+   * @param toDoList CSVFile object
    */
-  public CompleteRequest(List<Option> options, CSVFile csvFile) {
+  public CompleteRequest(List<Option> options, ToDoList toDoList) {
     this.options = options;
-    this.csvFile = csvFile;
+    this.toDoList = toDoList;
   }
 
   /**
@@ -32,11 +33,11 @@ public class CompleteRequest implements IRequest {
     for(Option option: options){
       try{
         Integer id = Integer.parseInt(option.getArgValue());
-        if(!this.csvFile.containsID(id)){
+        if(!this.toDoList.containsID(id)){
           System.out.println(String.format("The todo with ID %s doesn't exist.", id));
           continue;
         }
-        this.csvFile.completeToDo(id);
+        this.toDoList.completeToDo(id);
       }catch(NumberFormatException ex){
         System.out.println(String.format("Invalid format for option %s with value %s.", option.getName(), option.getArgValue()));
         continue;

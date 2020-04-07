@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import todotrackingsystem.model.ToDoItem.Builder;
 import todotrackingsystem.utils.InvalidArgumentException;
@@ -20,7 +21,7 @@ import todotrackingsystem.view.DisplayToDoList;
 import todotrackingsystem.utils.Rules;
 
 /**
- * The type Csv file.
+ * The type CSVFile, read info from the csv file and manipulate on the file.
  */
 public class CSVFile {
 
@@ -32,6 +33,12 @@ public class CSVFile {
   private Set<String> categoryList;
   private static CSVFile instance;
 
+  /**
+   * Instantiates an CSVFile object.
+   *
+   * @param csvPath the csv file path
+   * @throws InvalidArgumentException if there is something wrong processing the CSV file
+   */
   private CSVFile(String csvPath) throws InvalidArgumentException {
     this.csvPath = csvPath;
     this.headerMap = new HashMap<>();
@@ -42,13 +49,13 @@ public class CSVFile {
   }
 
   /**
-   * Read csv csv file.
+   * Instantiates the csv file, the class could only have one instance.
    *
    * @param csvPath the csv path
-   * @return the csv file
+   * @return the only csv file instance of the CSVFile
    * @throws InvalidArgumentException the invalid argument exception
    */
-//Singleton Pattern
+  // Singleton Pattern
   public static CSVFile readCSV(String csvPath) throws InvalidArgumentException{
     if (instance == null) {
       instance = new CSVFile(csvPath);
@@ -56,6 +63,12 @@ public class CSVFile {
     return instance;
   }
 
+  /**
+   * Processes the CSVFile, read it in and parse the todos to store in the todoList.
+   * If the CSVFile is empty, directly return.
+   *
+   * @throws InvalidArgumentException if there is something wrong in the processing
+   */
   private void processCSVFile() throws InvalidArgumentException{
     BufferedReader inputFile = null;
 
@@ -77,6 +90,11 @@ public class CSVFile {
     }
   }
 
+  /**
+   * Processes the header of the csv file, in order to match column header with column content easier.
+   *
+   * @param header the header line of a csv file
+   */
   private void processHeader(String header) {
     this.header = header + System.lineSeparator();  // Store the header for writing back.
 
@@ -87,6 +105,12 @@ public class CSVFile {
     }
   }
 
+  /**
+   * Processes each line in the csv file, parse them into a ToDoItem instance and store in the todoList.
+   * If the line is invalid, inform the user, and skip the line.
+   *
+   * @param line one single line in the csv file
+   */
   private void processToDoItem(String line) {
     String[] items = line.split(("\",\""));
     // Skip the invalid line
@@ -105,6 +129,12 @@ public class CSVFile {
     this.todoList.put(Integer.parseInt(mappingTable.get("id")), todo);
   }
 
+  /**
+   * Parses the <Column-header, Column-content> key-value pair into corresponding ToDoItem.
+   *
+   * @param mappingTable the <Column-header, Column-content> key-value pair of each line in csv file
+   * @return a corresponding ToDoItem of the line in csv file
+   */
   private ToDoItem parseToDoItem(HashMap<String, String> mappingTable) {
     Integer id = Integer.parseInt(mappingTable.get("id"));
     this.currentMaxID = Math.max(id, currentMaxID);
@@ -140,7 +170,7 @@ public class CSVFile {
   }
 
   /**
-   * Gets current max id.
+   * Gets current max id of the csv file.
    *
    * @return the current max id
    */
@@ -149,16 +179,16 @@ public class CSVFile {
   }
 
   /**
-   * Gets todo list.
+   * Gets whole todolist, representing in List<ToDoItem>.
    *
-   * @return the todo list
+   * @return the todo list storing in the CSVFile
    */
   public List<ToDoItem> getTodoList() {
     return new ArrayList<ToDoItem>(this.todoList.values());
   }
 
   /**
-   * Add to do.
+   * Add a new ToDoItem in the csv file.
    *
    * @param todo the todo
    */
@@ -167,38 +197,38 @@ public class CSVFile {
   }
 
   /**
-   * Contains id boolean.
+   * Checks whether the todoList contains the input id.
    *
-   * @param id the id
-   * @return the boolean
+   * @param id the id to search for
+   * @return true if the id is in the todoList, false otherwise
    */
   public boolean containsID(Integer id) {
     return this.todoList.containsKey(id);
   }
 
   /**
-   * Contains category boolean.
+   * Checks whether the todoList contains the input category.
    *
-   * @param category the category
-   * @return the boolean
+   * @param category the category to search for
+   * @return true if the category is in the todoList, false otherwise
    */
   public boolean containsCategory(String category) {
     return this.categoryList.contains(category);
   }
 
   /**
-   * Complete to do.
+   * Complete to ToDoItem with the id. Inform the user if the specified ToDoItem is already completed.
    *
-   * @param id the id
+   * @param id the id associated with the ToDoItem to complete
    */
   public void completeToDo(Integer id) {
     this.todoList.get(id).completeToDo();
   }
 
   /**
-   * Save csv file.
+   * Writes the todoList back to the csv file.
    *
-   * @param output the output
+   * @param output the output to be written back
    */
   public void saveCSVFile(String output) {
     BufferedWriter outputFile = null;
@@ -219,10 +249,10 @@ public class CSVFile {
   }
 
   /**
-   * Filter incomplete list.
+   * Filter the todoList by incomplete todos.
    *
-   * @param toDoItemList the to do item list
-   * @return the list
+   * @param toDoItemList the toDoList to filter
+   * @return the list containing only incomplete todos
    */
   public List<ToDoItem> filterIncomplete(List<ToDoItem> toDoItemList) {
     List<ToDoItem> incompleteList = new ArrayList<>();
@@ -235,11 +265,11 @@ public class CSVFile {
   }
 
   /**
-   * Filter category list.
+   * Filter the todoList by the specified category.
    *
-   * @param toDoItemList the to do item list
-   * @param category     the category
-   * @return the list
+   * @param toDoItemList the toDoList to filter
+   * @param category     the category to search for
+   * @return the list containing only the specified category todos
    */
   public List<ToDoItem> filterCategory(List<ToDoItem> toDoItemList, String category) {
     List<ToDoItem> categoryToDoItemList = new ArrayList<>();
@@ -252,10 +282,11 @@ public class CSVFile {
   }
 
   /**
-   * Sort by date list.
+   * Sort the todoList by due date.
+   * Sort in ascending order. For ToDoItems with no due date, list at the end of the list.
    *
-   * @param todoList the todo list
-   * @return the list
+   * @param todoList the todoList to sort
+   * @return the list sorted by the due date
    */
   public List<ToDoItem> sortByDate(List<ToDoItem> todoList) {
     Collections.sort(todoList, (t1, t2) -> {
@@ -267,7 +298,9 @@ public class CSVFile {
   }
 
   /**
-   * Sort by priority list.
+   * Sort the todoList by priority. With 1 being the highest priority, 3 being the lowest priority.
+   * Sort in ascending order. For ToDoItem with no priority, treated as lowest priority
+   * and list at the end of the list.
    *
    * @param toDoItemList the to do item list
    * @return the list
@@ -281,23 +314,27 @@ public class CSVFile {
     return toDoItemList;
   }
 
-
-  /**
-   * The entry point of application.
-   *
-   * @param args the input arguments
-   */
-  public static void main(String[] args) {
-    try {
-      CSVFile csv = CSVFile.readCSV("todos.csv");
-      List<ToDoItem> list = csv.getTodoList();
-      List<ToDoItem> sorted = csv.sortByDate(list);
-      System.out.println(DisplayToDoList.display(sorted));
-    } catch (InvalidArgumentException ex) {
-      System.out.println("Something went wrong!");
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
-//    for (int i: csv.todoMap.keySet()) {
-//      System.out.println(i + ",");
-//    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    CSVFile csvFile = (CSVFile) o;
+    return Objects.equals(csvPath, csvFile.csvPath);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(csvPath);
+  }
+
+  @Override
+  public String toString() {
+    return "CSVFile{" +
+        "csvPath='" + csvPath + '\'' +
+        '}';
   }
 }
