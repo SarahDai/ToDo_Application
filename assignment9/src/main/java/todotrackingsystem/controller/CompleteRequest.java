@@ -1,5 +1,6 @@
 package todotrackingsystem.controller;
 
+import java.util.Objects;
 import todotrackingsystem.model.ToDoList;
 import todotrackingsystem.view.Option;
 
@@ -42,5 +43,31 @@ public class CompleteRequest implements IRequest {
         continue;
       }
     }
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    CompleteRequest that = (CompleteRequest) o;
+    return Objects.equals(options, that.options) &&
+        Objects.equals(toDoList, that.toDoList);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(options, toDoList);
+  }
+
+  @Override
+  public String toString() {
+    return "CompleteRequest{" +
+        "options=" + options +
+        ", toDoList=" + toDoList +
+        '}';
   }
 }
