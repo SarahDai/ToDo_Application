@@ -1,8 +1,10 @@
 package todotrackingsystem.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import todotrackingsystem.utils.ListFormatter;
 import todotrackingsystem.view.Option;
 import todotrackingsystem.model.CSVFile;
 import todotrackingsystem.model.ToDoItem;
@@ -35,32 +37,45 @@ public class DisplayRequest implements IRequest {
     for(Option option: options){
       map.put(option.getName(), option.getArgValue());
     }
-    if(map.size() == 1){
+
+    if (map.size() == 1) {
       System.out.println(DisplayToDoList.display(this.csvFile.getTodoList()));
-    }else{
+    } else {
       List<ToDoItem> displayList = this.csvFile.getTodoList();
-      if(map.containsKey(Rules.SHOW_INCOMPLETE)){
+      List<String> requested = new ArrayList<String>() {{
+        add(Rules.DISPLAY_REQUEST);
+      }};
+      if (map.containsKey(Rules.SHOW_INCOMPLETE)) {
         displayList = this.csvFile.filterIncomplete(displayList);
+        requested.add(Rules.SHOW_INCOMPLETE);
       }
-      if(map.containsKey(Rules.SHOW_CATEGORY)){
+      if (map.containsKey(Rules.SHOW_CATEGORY)) {
         String category = map.get(Rules.SHOW_CATEGORY);
-        if(!this.csvFile.containsCategory(category)){
+        if (!this.csvFile.containsCategory(category)) {
           throw new IllegalArgumentException(String.format("No Such category %s", category));
-        }else{
+        } else {
           displayList = this.csvFile.filterCategory(displayList, category);
+          requested.add(Rules.SHOW_CATEGORY);
         }
       }
-      if(displayList.isEmpty()){
+      if (displayList.isEmpty()) {
         System.out.println("There is no such todo to display, please try again!");
         return;
       }
-      if(map.containsKey(Rules.SORT_BY_DATE)){
+
+      if (map.containsKey(Rules.SORT_BY_DATE)) {
         displayList = this.csvFile.sortByDate(displayList);
+        requested.add(Rules.SORT_BY_DATE);
       }
-      if(map.containsKey(Rules.SORT_BY_PRIORITY)){
+
+      if (map.containsKey(Rules.SORT_BY_PRIORITY)) {
         displayList = this.csvFile.sortByPriority(displayList);
+        requested.add(Rules.SORT_BY_PRIORITY);
       }
-      System.out.println(DisplayToDoList.display(displayList));
+
+      System.out.println(String.format("Display todos[based on options %s]: ", ListFormatter.format(requested)));
+      System.out.print(Rules.getDefaultHeaders());
+      System.out.print(DisplayToDoList.display(displayList));
     }
   }
 }

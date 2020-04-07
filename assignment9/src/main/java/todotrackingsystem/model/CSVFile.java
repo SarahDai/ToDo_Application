@@ -14,12 +14,14 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeMap;
 import todotrackingsystem.model.ToDoItem.Builder;
 import todotrackingsystem.utils.InvalidArgumentException;
 import todotrackingsystem.view.DisplayToDoList;
 import todotrackingsystem.utils.Rules;
 
+/**
+ * The type Csv file.
+ */
 public class CSVFile {
 
   private String csvPath;
@@ -39,7 +41,14 @@ public class CSVFile {
     this.processCSVFile();
   }
 
-  //Singleton Pattern
+  /**
+   * Read csv csv file.
+   *
+   * @param csvPath the csv path
+   * @return the csv file
+   * @throws InvalidArgumentException the invalid argument exception
+   */
+//Singleton Pattern
   public static CSVFile readCSV(String csvPath) throws InvalidArgumentException{
     if (instance == null) {
       instance = new CSVFile(csvPath);
@@ -130,30 +139,67 @@ public class CSVFile {
     return builderOptions.build();
   }
 
+  /**
+   * Gets current max id.
+   *
+   * @return the current max id
+   */
   public Integer getCurrentMaxID() {
     return this.currentMaxID;
   }
 
+  /**
+   * Gets todo list.
+   *
+   * @return the todo list
+   */
   public List<ToDoItem> getTodoList() {
     return new ArrayList<ToDoItem>(this.todoList.values());
   }
 
+  /**
+   * Add to do.
+   *
+   * @param todo the todo
+   */
   public void addToDo(ToDoItem todo) {
-    this.todoList.put(this.currentMaxID++, todo);
+    this.todoList.put(++this.currentMaxID, todo);
   }
 
+  /**
+   * Contains id boolean.
+   *
+   * @param id the id
+   * @return the boolean
+   */
   public boolean containsID(Integer id) {
     return this.todoList.containsKey(id);
   }
 
+  /**
+   * Contains category boolean.
+   *
+   * @param category the category
+   * @return the boolean
+   */
   public boolean containsCategory(String category) {
     return this.categoryList.contains(category);
   }
 
+  /**
+   * Complete to do.
+   *
+   * @param id the id
+   */
   public void completeToDo(Integer id) {
     this.todoList.get(id).completeToDo();
   }
 
+  /**
+   * Save csv file.
+   *
+   * @param output the output
+   */
   public void saveCSVFile(String output) {
     BufferedWriter outputFile = null;
 
@@ -172,6 +218,12 @@ public class CSVFile {
     }
   }
 
+  /**
+   * Filter incomplete list.
+   *
+   * @param toDoItemList the to do item list
+   * @return the list
+   */
   public List<ToDoItem> filterIncomplete(List<ToDoItem> toDoItemList) {
     List<ToDoItem> incompleteList = new ArrayList<>();
     for (ToDoItem todo: toDoItemList) {
@@ -182,6 +234,13 @@ public class CSVFile {
     return incompleteList;
   }
 
+  /**
+   * Filter category list.
+   *
+   * @param toDoItemList the to do item list
+   * @param category     the category
+   * @return the list
+   */
   public List<ToDoItem> filterCategory(List<ToDoItem> toDoItemList, String category) {
     List<ToDoItem> categoryToDoItemList = new ArrayList<>();
     for (ToDoItem todo: toDoItemList) {
@@ -192,6 +251,12 @@ public class CSVFile {
     return categoryToDoItemList;
   }
 
+  /**
+   * Sort by date list.
+   *
+   * @param todoList the todo list
+   * @return the list
+   */
   public List<ToDoItem> sortByDate(List<ToDoItem> todoList) {
     Collections.sort(todoList, (t1, t2) -> {
       if (t1.getDue() == null) return 1;
@@ -201,6 +266,12 @@ public class CSVFile {
     return todoList;
   }
 
+  /**
+   * Sort by priority list.
+   *
+   * @param toDoItemList the to do item list
+   * @return the list
+   */
   public List<ToDoItem> sortByPriority(List<ToDoItem> toDoItemList) {
     Collections.sort(toDoItemList, (t1, t2) -> {
       if (t1.getPriority() == null) return 1;
@@ -211,7 +282,11 @@ public class CSVFile {
   }
 
 
-
+  /**
+   * The entry point of application.
+   *
+   * @param args the input arguments
+   */
   public static void main(String[] args) {
     try {
       CSVFile csv = CSVFile.readCSV("todos.csv");

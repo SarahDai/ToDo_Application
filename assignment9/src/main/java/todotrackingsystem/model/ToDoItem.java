@@ -1,7 +1,7 @@
 package todotrackingsystem.model;
 
 import java.time.LocalDate;
-import todotrackingsystem.utils.InvalidArgumentException;
+import java.util.Objects;
 
 /**
  * The type ToDoItem, contains all information about a ToDoItem data structure.
@@ -174,7 +174,27 @@ public class ToDoItem {
     this.completed = true;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    ToDoItem toDoItem = (ToDoItem) o;
+    return Objects.equals(id, toDoItem.id) &&
+        Objects.equals(text, toDoItem.text) &&
+        completed == toDoItem.completed &&
+        Objects.equals(due, toDoItem.due) &&
+        Objects.equals(priority, toDoItem.priority) &&
+        Objects.equals(category, toDoItem.category);
+  }
 
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, text, completed, due, priority, category);
+  }
 
   @Override
   public String toString() {
