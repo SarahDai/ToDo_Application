@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import todotrackingsystem.model.ToDoList;
 import todotrackingsystem.utils.ListFormatter;
 import todotrackingsystem.view.Option;
 import todotrackingsystem.model.CSVFile;
@@ -16,16 +17,16 @@ import todotrackingsystem.view.DisplayToDoList;
  */
 public class DisplayRequest implements IRequest {
   private List<Option> options;
-  private CSVFile csvFile;
+  private ToDoList toDoList;
 
   /**
    * Constructor of the class
    * @param options list of options
-   * @param csvFile a CSVFile object
+   * @param toDoList a CSVFile object
    */
-  public DisplayRequest(List<Option> options, CSVFile csvFile) {
+  public DisplayRequest(List<Option> options, ToDoList toDoList) {
     this.options = options;
-    this.csvFile = csvFile;
+    this.toDoList = toDoList;
   }
 
   /**
@@ -39,22 +40,22 @@ public class DisplayRequest implements IRequest {
     }
 
     if (map.size() == 1) {
-      System.out.println(DisplayToDoList.display(this.csvFile.getTodoList()));
+      System.out.println(DisplayToDoList.display(this.toDoList.getTodoList()));
     } else {
-      List<ToDoItem> displayList = this.csvFile.getTodoList();
+      List<ToDoItem> displayList = this.toDoList.getTodoList();
       List<String> requested = new ArrayList<String>() {{
         add(Rules.DISPLAY_REQUEST);
       }};
       if (map.containsKey(Rules.SHOW_INCOMPLETE)) {
-        displayList = this.csvFile.filterIncomplete(displayList);
+        displayList = this.toDoList.filterIncomplete(displayList);
         requested.add(Rules.SHOW_INCOMPLETE);
       }
       if (map.containsKey(Rules.SHOW_CATEGORY)) {
         String category = map.get(Rules.SHOW_CATEGORY);
-        if (!this.csvFile.containsCategory(category)) {
+        if (!this.toDoList.containsCategory(category)) {
           throw new IllegalArgumentException(String.format("No Such category %s", category));
         } else {
-          displayList = this.csvFile.filterCategory(displayList, category);
+          displayList = this.toDoList.filterCategory(displayList, category);
           requested.add(Rules.SHOW_CATEGORY);
         }
       }
@@ -64,12 +65,12 @@ public class DisplayRequest implements IRequest {
       }
 
       if (map.containsKey(Rules.SORT_BY_DATE)) {
-        displayList = this.csvFile.sortByDate(displayList);
+        displayList = this.toDoList.sortByDate(displayList);
         requested.add(Rules.SORT_BY_DATE);
       }
 
       if (map.containsKey(Rules.SORT_BY_PRIORITY)) {
-        displayList = this.csvFile.sortByPriority(displayList);
+        displayList = this.toDoList.sortByPriority(displayList);
         requested.add(Rules.SORT_BY_PRIORITY);
       }
 

@@ -2,7 +2,8 @@ package todotrackingsystem.controller;
 
 import java.util.List;
 import java.util.Map.Entry;
-import todotrackingsystem.model.CSVFile;
+import todotrackingsystem.model.CSVParser;
+import todotrackingsystem.model.ToDoList;
 import todotrackingsystem.utils.InvalidArgumentException;
 import todotrackingsystem.utils.Rules;
 import todotrackingsystem.view.CommandLineParser;
@@ -14,15 +15,16 @@ import todotrackingsystem.view.Option;
  * A request Controller class that controls the process of request
  */
 public class RequestController {
-  private CSVFile csvFile;
+  private CSVParser csvParser;
   private CommandLineParser commandLineParser;
 
   /**
    * Constructor of the class
    * @param commandLineParser a CommandLineParser object
    */
-  public RequestController(CommandLineParser commandLineParser) {
+  public RequestController(CommandLineParser commandLineParser, CSVParser csvParser) {
     this.commandLineParser = commandLineParser;
+    this.csvParser = csvParser;
   }
 
   /**
@@ -32,11 +34,11 @@ public class RequestController {
    */
   public void processRequests(String[] args) throws InvalidArgumentException {
     ValidArgs commands = this.commandLineParser.parseCommand(args);
-    this.csvFile = CSVFile.readCSV(commands.getIndividualOption(Rules.CSV_FILE).getArgValue());
+    ToDoList toDoList = csvParser.readCSV(commands.getIndividualOption(Rules.CSV_FILE).getArgValue());
 
     for(Entry<String, List<Option>> optionGroup: commands.getOptionTypes().entrySet()){
       IRequest request = RequestFactory
-          .sendRequest(optionGroup.getKey(), optionGroup.getValue(), this.csvFile);
+          .sendRequest(optionGroup.getKey(), optionGroup.getValue(), toDoList);
       if(request != null){
         request.process();
       }
@@ -45,7 +47,6 @@ public class RequestController {
       }
     }
 
-    this.csvFile.saveCSVFile(DisplayToDoList.display(this.csvFile.getTodoList()));
+    this.csvParser.saveCSVFile(DisplayToDoList.display(toDoList.getTodoList()));
   }
-
 }

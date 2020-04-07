@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import todotrackingsystem.model.ToDoItem.Builder;
+import todotrackingsystem.model.ToDoList;
 import todotrackingsystem.view.Option;
 import todotrackingsystem.model.CSVFile;
 import todotrackingsystem.utils.Rules;
@@ -15,16 +16,16 @@ import todotrackingsystem.model.ToDoItem;
  */
 public class AddRequest implements IRequest {
   private List<Option> options;
-  private CSVFile csvFile;
+  private ToDoList toDoList;
 
   /**
    * Constructor of the class
    * @param options List of options
-   * @param csvFile CSVFile object
+   * @param toDoList CSVFile object
    */
-  public AddRequest(List<Option> options, CSVFile csvFile) {
+  public AddRequest(List<Option> options, ToDoList toDoList) {
     this.options = options;
-    this.csvFile = csvFile;
+    this.toDoList = toDoList;
   }
 
   /**
@@ -38,7 +39,7 @@ public class AddRequest implements IRequest {
     }
 
     String text = map.get(Rules.TODO_TEXT);
-    ToDoItem.Builder builderOptions = new Builder(this.csvFile.getCurrentMaxID()+1, text);
+    ToDoItem.Builder builderOptions = new Builder(this.toDoList.getCurrentMaxID()+1, text);
 
     boolean completed = map.containsKey(Rules.SET_NEW_TODO_COMPLETED);
     if (completed) builderOptions.complete();
@@ -61,6 +62,6 @@ public class AddRequest implements IRequest {
       builderOptions.setCategory(map.get(Rules.SET_NEW_TODO_CATEGORY));
     }
 
-    this.csvFile.addToDo(builderOptions.build());
+    this.toDoList.addNewToDo(builderOptions.build());
   }
 }
