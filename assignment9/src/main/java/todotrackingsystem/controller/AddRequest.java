@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import todotrackingsystem.model.ToDoItem.Builder;
 import todotrackingsystem.model.ToDoList;
 import todotrackingsystem.view.Option;
@@ -63,5 +64,31 @@ public class AddRequest implements IRequest {
     }
 
     this.toDoList.addNewToDo(builderOptions.build());
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof AddRequest)) {
+      return false;
+    }
+    AddRequest that = (AddRequest) o;
+    return Objects.equals(options, that.options) &&
+        Objects.equals(toDoList, that.toDoList);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(options, toDoList);
+  }
+
+  @Override
+  public String toString() {
+    return "AddRequest{" +
+        "options=" + options +
+        ", toDoList=" + toDoList +
+        '}';
   }
 }

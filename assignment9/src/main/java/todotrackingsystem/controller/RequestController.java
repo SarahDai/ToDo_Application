@@ -2,6 +2,7 @@ package todotrackingsystem.controller;
 
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Objects;
 import todotrackingsystem.model.CSVParser;
 import todotrackingsystem.model.ToDoList;
 import todotrackingsystem.utils.InvalidArgumentException;
@@ -48,5 +49,31 @@ public class RequestController {
     }
 
     this.csvParser.saveCSVFile(DisplayToDoList.display(toDoList.getTodoList()));
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof RequestController)) {
+      return false;
+    }
+    RequestController that = (RequestController) o;
+    return Objects.equals(csvParser, that.csvParser) &&
+        Objects.equals(commandLineParser, that.commandLineParser);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(csvParser, commandLineParser);
+  }
+
+  @Override
+  public String toString() {
+    return "RequestController{" +
+        "csvParser=" + csvParser +
+        ", commandLineParser=" + commandLineParser +
+        '}';
   }
 }
