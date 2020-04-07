@@ -39,7 +39,7 @@ public class CompleteRequest implements IRequest {
         }
         this.toDoList.completeToDo(id);
       }catch(NumberFormatException ex){
-        System.out.println(String.format("Invalid format for option %s with value %s.", option.getName(), option.getArgValue()));
+        System.out.println(String.format("Invalid format for option %s with value %s. Should be an Integer.", option.getName(), option.getArgValue()));
         continue;
       }
     }

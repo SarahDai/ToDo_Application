@@ -16,6 +16,7 @@ public class AddRequestTest {
   private List<Option> addOptions;
   private ToDoList toDoList;
   private ToDoItem hw9;
+  private List<Option> allOptions;
 
   @Before
   public void setUp() throws Exception {
@@ -24,12 +25,29 @@ public class AddRequestTest {
     toDoList.addExistingToDo(1, hw9);
     Option add = new Option.Builder(Rules.ADD_REQUEST, "add new todo").build();
     Option todoText = new Option.Builder(Rules.TODO_TEXT, "new todo text").build();
+    todoText.setArgValue("Review");
+    Option due = new Option.Builder(Rules.SET_NEW_TODO_DUE, "due").setHasArg().build();
+    due.setArgValue("03/22/2018");
+    Option priority = new Option.Builder(Rules.SET_NEW_TODO_PRIORITY, "priority").setHasArg().build();
+    priority.setArgValue("2");
+    Option category = new Option.Builder(Rules.SET_NEW_TODO_CATEGORY, "category").setHasArg().build();
+    category.setArgValue("school");
+    Option complete = new Option.Builder(Rules.SET_NEW_TODO_COMPLETED, "complete new todo").build();
+
     todoText.setArgValue("Review 5800");
     addOptions = new ArrayList<Option>() {{
       add(add);
       add(todoText);
     }};
     addRequest = RequestFactory.sendRequest(Rules.ADD_REQUEST, addOptions, toDoList);
+    allOptions = new ArrayList<Option>() {{
+      add(add);
+      add(todoText);
+      add(due);
+      add(priority);
+      add(category);
+      add(complete);
+    }};
   }
 
   @Test
@@ -39,6 +57,11 @@ public class AddRequestTest {
     addRequest.process();
     assertEquals(2, toDoList.getCurrentMaxID().intValue());
     assertEquals(2, toDoList.getTodoList().size());
+
+    ToDoList emptyList = new ToDoList();
+    IRequest allOptionAddRequest = RequestFactory.sendRequest(Rules.ADD_REQUEST, allOptions, emptyList);
+    allOptionAddRequest.process();
+    assertEquals(1, emptyList.getTodoList().size());
   }
 
   @Test

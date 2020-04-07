@@ -61,13 +61,12 @@ public class RequestController {
       return false;
     }
     RequestController that = (RequestController) o;
-    return Objects.equals(csvParser, that.csvParser) &&
-        Objects.equals(commandLineParser, that.commandLineParser);
+    return Objects.equals(commandLineParser, that.commandLineParser);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(csvParser, commandLineParser);
+    return Objects.hash(commandLineParser);
   }
 
   @Override
