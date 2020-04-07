@@ -45,11 +45,12 @@ public class CSVParser {
   }
 
   /**
-   * Read csv to do list.
+   * Processes the csv file, read it in and parse the todos to store in the todoList.
+   * If the csv file is empty, directly return.
    *
    * @param csvPath the csv path
-   * @return the to do list
-   * @throws InvalidArgumentException the invalid argument exception
+   * @return the ToDoList object
+   * @throws InvalidArgumentException if there is something wrong in the processing
    */
   public ToDoList readCSV(String csvPath) throws InvalidArgumentException {
     this.csvPath = csvPath;
@@ -74,6 +75,11 @@ public class CSVParser {
     }
   }
 
+  /**
+   * Processes the header of the csv file, in order to match column header with column content easier.
+   *
+   * @param header the header line of a csv file
+   */
   private void processHeader(String header) {
     this.header = header + System.lineSeparator();  // Store the header for writing back.
 
@@ -84,6 +90,12 @@ public class CSVParser {
     }
   }
 
+  /**
+   * Processes each line in the csv file, parse them into a ToDoItem instance and store in the todoList.
+   * If the line is invalid, inform the user, and skip the line.
+   *
+   * @param line one single line in the csv file
+   */
   private void processToDoItem(String line) {
     String[] items = line.split(("\",\""));
     // Skip the invalid line
@@ -102,6 +114,12 @@ public class CSVParser {
     this.toDoList.addExistingToDo(Integer.parseInt(mappingTable.get("id")), todo);
   }
 
+  /**
+   * Parses the <Column-header, Column-content> key-value pair into corresponding ToDoItem.
+   *
+   * @param mappingTable the <Column-header, Column-content> key-value pair of each line in csv file
+   * @return a corresponding ToDoItem of the line in csv file
+   */
   private ToDoItem parseToDoItem(HashMap<String, String> mappingTable) {
     Integer id = Integer.parseInt(mappingTable.get("id"));
     this.toDoList.updateCurrentMaxID(id);
@@ -137,9 +155,9 @@ public class CSVParser {
   }
 
   /**
-   * Save csv file.
+   * Write the output back into the csv file.
    *
-   * @param output the output
+   * @param output the output to be stored in the csv file
    */
   public void saveCSVFile(String output) {
     BufferedWriter outputFile = null;
